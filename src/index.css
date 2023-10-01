@@ -1,0 +1,243 @@
+/* sweetalert css */
+@import "./assets/css/sweetalert.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  @apply scroll-smooth;
+}
+
+body {
+  @apply bg-[#fafafa] font-nunito;
+}
+
+body.dark {
+  @apply bg-[#060818];
+}
+
+/* Panel */
+.panel {
+  @apply relative rounded-md bg-white p-5 shadow dark:bg-black;
+}
+
+/* Buttons */
+.btn {
+  @apply relative flex items-center justify-center rounded-md border px-5 py-2 text-sm font-semibold shadow-[0_10px_20px_-10px] outline-none transition duration-300 hover:shadow-none;
+}
+.btn-lg {
+  @apply px-7 py-2.5 text-base;
+}
+.btn-sm {
+  @apply px-2.5 py-1.5 text-xs;
+}
+.btn[disabled] {
+  @apply cursor-not-allowed opacity-60;
+}
+
+.btn-primary {
+  @apply border-primary bg-primary text-white shadow-primary/60;
+}
+.btn-outline-primary {
+  @apply border-primary text-primary shadow-none hover:bg-primary hover:text-white;
+}
+
+.btn-secondary {
+  @apply border-secondary bg-secondary text-white shadow-secondary/60;
+}
+.btn-outline-secondary {
+  @apply border-secondary text-secondary shadow-none hover:bg-secondary hover:text-white;
+}
+
+.btn-success {
+  @apply border-success bg-success text-white shadow-success/60;
+}
+.btn-outline-success {
+  @apply border-success text-success shadow-none hover:bg-success hover:text-white;
+}
+
+.btn-danger {
+  @apply border-danger bg-danger text-white shadow-danger/60;
+}
+.btn-outline-danger {
+  @apply border-danger text-danger shadow-none hover:bg-danger hover:text-white;
+}
+
+.btn-warning {
+  @apply border-warning bg-warning text-white shadow-warning/60;
+}
+.btn-outline-warning {
+  @apply border-warning text-warning shadow-none hover:bg-warning hover:text-white;
+}
+
+.btn-info {
+  @apply border-info bg-info text-white shadow-info/60;
+}
+.btn-outline-info {
+  @apply border-info text-info shadow-none hover:bg-info hover:text-white;
+}
+
+.btn-dark {
+  @apply border-dark bg-dark text-white shadow-dark/60;
+}
+
+.btn-outline-dark {
+  @apply border-dark text-dark shadow-none hover:bg-dark hover:text-white;
+}
+
+/* checkbox & radio */
+.form-radio,
+.form-checkbox {
+  @apply h-5 w-5 cursor-pointer rounded border-2 border-white-light bg-transparent text-primary !shadow-none !outline-none !ring-0 !ring-offset-0 checked:bg-[length:90%_90%] disabled:cursor-not-allowed disabled:bg-[#eee] ltr:mr-1.5 rtl:ml-1.5
+    dark:border-[#253b5c] dark:checked:border-transparent dark:disabled:bg-[#1b2e4b];
+}
+
+.form-checkbox.outline-primary:checked {
+  @apply border-primary bg-transparent;
+  background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%234361ee' xmlns='http://www.w3.org/2000/svg'><path d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/></svg>");
+}
+.form-checkbox.outline-secondary:checked {
+  @apply border-secondary bg-transparent;
+  background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%23805dca' xmlns='http://www.w3.org/2000/svg'><path d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/></svg>");
+}
+.form-checkbox.outline-success:checked {
+  @apply border-success bg-transparent;
+  background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%2300ab55' xmlns='http://www.w3.org/2000/svg'><path d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/></svg>");
+}
+.form-checkbox.outline-danger:checked {
+  @apply border-danger bg-transparent;
+  background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%23e7515a' xmlns='http://www.w3.org/2000/svg'><path d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/></svg>");
+}
+.form-checkbox.outline-warning:checked {
+  @apply border-warning bg-transparent;
+  background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%23e2a03f' xmlns='http://www.w3.org/2000/svg'><path d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/></svg>");
+}
+.form-checkbox.outline-info:checked {
+  @apply border-info bg-transparent;
+  background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%232196f3' xmlns='http://www.w3.org/2000/svg'><path d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/></svg>");
+}
+.form-checkbox.outline-dark:checked {
+  @apply border-dark bg-transparent;
+  background-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='%233b3f5c' xmlns='http://www.w3.org/2000/svg'><path d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/></svg>");
+}
+
+.form-radio {
+  @apply rounded-full;
+}
+
+.form-radio.outline-primary:checked {
+  @apply border-primary bg-transparent bg-none;
+}
+.form-radio.outline-secondary:checked {
+  @apply border-secondary bg-transparent bg-none;
+}
+.form-radio.outline-success:checked {
+  @apply border-success bg-transparent bg-none;
+}
+.form-radio.outline-danger:checked {
+  @apply border-danger bg-transparent bg-none;
+}
+.form-radio.outline-warning:checked {
+  @apply border-warning bg-transparent bg-none;
+}
+.form-radio.outline-info:checked {
+  @apply border-info bg-transparent bg-none;
+}
+.form-radio.outline-dark:checked {
+  @apply border-dark bg-transparent bg-none;
+}
+
+/* dropdown */
+.dropdown {
+  @apply relative;
+}
+.dropdown > button {
+  @apply flex;
+}
+.dropdown ul {
+  @apply my-1 min-w-[120px] rounded bg-white p-0 py-2 shadow dark:bg-[#1b2e4b] text-black dark:text-white-dark;
+}
+.dropdown ul li > a,
+.dropdown ul li > button {
+  @apply flex items-center px-4 py-2 hover:bg-primary/10 hover:text-primary;
+}
+.dropdown ul li > button {
+  @apply w-full;
+}
+
+/* perfect scrollbar */
+.ps__rail-y > .ps__thumb-y,
+.ps__rail-y > .ps__thumb-y {
+  @apply !w-1.5 !bg-[#DDDDDD] dark:!bg-[#2d334c];
+}
+.ps .ps__rail-x:hover,
+.ps .ps__rail-y:hover,
+.ps .ps__rail-x:focus,
+.ps .ps__rail-y:focus,
+.ps .ps__rail-x.ps--clicking,
+.ps .ps__rail-y.ps--clicking {
+  @apply !opacity-60;
+}
+.ps .ps__rail-x:hover,
+.ps .ps__rail-y:hover,
+.ps .ps__rail-x:focus,
+.ps .ps__rail-y:focus,
+.ps .ps__rail-x.ps--clicking,
+.ps .ps__rail-y.ps--clicking {
+  @apply !bg-transparent;
+}
+
+/* swal2 */
+.swal2-container .swal2-close {
+  @apply text-white hover:text-dark-light focus:shadow-none;
+}
+
+.swal2-container .swal2-popup.swal2-toast {
+  @apply bg-dark py-2.5 px-5;
+}
+
+.swal2-popup.swal2-toast .swal2-title,
+.swal2-container .swal2-popup.swal2-toast .swal2-html-container {
+  @apply text-white;
+}
+.swal2-container .swal2-popup.swal2-toast.color-primary {
+  @apply bg-primary;
+}
+
+.swal2-container .swal2-popup.swal2-toast.color-secondary {
+  @apply bg-secondary;
+}
+
+.swal2-container .swal2-popup.swal2-toast.color-warning {
+  @apply bg-warning;
+}
+.swal2-container .swal2-popup.swal2-toast.color-info {
+  @apply bg-info;
+}
+.swal2-container .swal2-popup.swal2-toast.color-danger {
+  @apply bg-danger;
+}
+.swal2-container .swal2-popup.swal2-toast.color-success {
+  @apply bg-success;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(67, 89, 113, 0.4);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
