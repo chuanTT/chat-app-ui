@@ -135,7 +135,7 @@ const ReactSelectCus: FC<ReactSelectCusProps> = (prop) => {
   const handleSelectedOptionChange = (selectedOption: any): void => {
     if (!Array.isArray(selectedOption)) {
       const id = selectedOption?.value
-      if (errors?.message) {
+      if (errors?.[name]?.message) {
         typeof clearErrors === "function" && clearErrors(name)
       }
       typeof setValue === "function" && setValue(name, id)

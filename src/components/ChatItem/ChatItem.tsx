@@ -1,6 +1,28 @@
+import { FC } from "react"
 import images from "@/assets/img"
+import { dateCheck } from "@/common/functions"
 
-const ChatItem = () => {
+interface ChatItemProps {
+  avatar?: string
+  first_name?: string
+  isOnline?: number
+  fullName?: string
+  messeage?: string
+  isMedia?: number
+  isMatched?: boolean
+  update_at?: string
+}
+
+const ChatItem: FC<ChatItemProps> = ({
+  avatar,
+  isOnline,
+  fullName,
+  messeage,
+  isMedia,
+  isMatched,
+  first_name,
+  update_at
+}) => {
   return (
     <button
       type="button"
@@ -8,20 +30,23 @@ const ChatItem = () => {
     >
       <div className="flex items-center w-full">
         <div className="flex-shrink-0 relative">
-          <img src={images.defaultAvatar} className="rounded-full h-12 w-12 object-cover" alt="avatar" />
-
-          <div>
-            <div className="absolute -bottom-[3px] -right-[3px] bg-white rounded-full overflow-hidden p-[3px]">
-              <div className="w-3 h-3 bg-success rounded-full"></div>
+          <img src={avatar ?? images.defaultAvatar} className="rounded-full h-12 w-12 object-cover" alt="avatar" />
+          {isOnline && (
+            <div>
+              <div className="absolute -bottom-[3px] -right-[3px] bg-white rounded-full overflow-hidden p-[3px]">
+                <div className="w-3 h-3 bg-success rounded-full"></div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <div className="pl-3 text-left w-[calc(100%_-_48px)] truncate">
-          <p className="mb-1 font-semibold whitespace-nowrap truncate">Nguyễn Đình Chuân</p>
+          <p className="mb-1 font-semibold whitespace-nowrap truncate">{fullName}</p>
           <p className="text-xs text-white-dark flex w-full">
-            <span className="whitespace-nowrap text-ellipsis overflow-x-hidden">Bạn có tin nhắn mới</span>
+            <span className="whitespace-nowrap text-ellipsis overflow-x-hidden">
+              {isMedia === 1 ? "Có hình ảnh mới" : `${isMatched ? "Bạn: " : `${first_name}: `} ${messeage}`}
+            </span>
             <span className="px-1 block"> · </span>
-            <span className="inline-block">16:00</span>
+            <span className="inline-block">{dateCheck(update_at)}</span>
           </p>
         </div>
       </div>

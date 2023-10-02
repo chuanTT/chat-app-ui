@@ -1,11 +1,13 @@
 /* eslint-disable react/display-name */
-import { createBrowserRouter, IndexRouteObject, Navigate, NonIndexRouteObject, Outlet } from "react-router-dom"
+import { createBrowserRouter, defer, IndexRouteObject, Navigate, NonIndexRouteObject, Outlet } from "react-router-dom"
 import { ComponentType, LazyExoticComponent, Suspense } from "react"
 import config from "@/config"
 
 import Home from "@/pages/home"
 import LoginCover from "@/pages/Authentication/LoginCover"
 import RegisterCover from "@/pages/Authentication/RegisterCover"
+import { verifyToken } from "@/api/authApi"
+import AuthLayout from "@/layout/LayoutProvider"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const Loadable = (Comp: LazyExoticComponent<ComponentType<any>>) => () => {
@@ -49,8 +51,15 @@ export const router: CustomRouteConfig[] = [
     errorElement: <Navigate to={config.router[404]} replace={true} />,
     children: [
       {
-        index: true,
-        element: <Home />
+        path: config.router.home,
+        loader: () => defer({ userPromise: verifyToken() }),
+        element: <AuthLayout />,
+        children: [
+          {
+            index: true,
+            element: <Home />
+          }
+        ]
       },
       {
         path: config.router.login,

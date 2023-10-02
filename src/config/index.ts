@@ -1,9 +1,10 @@
 import router from "./router"
 
-
-
 const config = {
   router,
+  localKey: {
+    token: "token"
+  },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
   formDataFile: (thumb: any[], formData: FormData, key?: string) => {
     if (thumb) {

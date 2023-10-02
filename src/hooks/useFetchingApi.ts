@@ -1,35 +1,6 @@
 import QueryRequest from "@/api/builder/QueryRequest"
-import { UseQueryOptions, useQuery, useQueryClient } from "@tanstack/react-query"
-//   import QueryRequest from "@/api/builder/QueryRequest";
-// import { QueryRequest } from "../apis";
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect } from "react"
-import { typeObject } from "@/types"
-
-export interface customUrlProps {
-  nameTable?: string
-  page?: number
-  limit?: number
-  query?: QueryRequest
-  RestProps?: typeObject
-  searchValue?: typeObject
-  [key: string]: string | number | undefined | QueryRequest | typeObject | object | boolean
-}
-
-
-export interface useFetchingApiParmeter {
-  nameTable: string
-  page?: number
-  limit?: number
-  customUrl?: (props: customUrlProps) => void | string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  CallAPi?: (url: string) => Promise<any>
-  update?: boolean
-  configCus?: UseQueryOptions
-  isConfig?: boolean
-  retry?: number
-  RestProps?: typeObject
-  searchValue?: typeObject
-}
 
 const useFetchingApi = ({
   nameTable = "",
