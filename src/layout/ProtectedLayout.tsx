@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import config from "@/config"
-import { FC, createContext, useContext, useEffect, useMemo, useState, ReactNode } from "react"
+import { FC, createContext, useContext, useMemo, useState, ReactNode } from "react"
 import { LogoutApi } from "@/api/authApi"
 
 const protectedLayoutContext = createContext({})
@@ -13,15 +13,6 @@ interface ProtectedLayoutProps {
 const ProtectedLayout: FC<ProtectedLayoutProps> = ({ children, userData }) => {
   const [user, setUser] = useState(userData ?? {})
   const navigate = useNavigate()
-
-  console.log(userData)
-
-  useEffect(() => {
-    if (!user?.id) {
-      navigate(config.router.login)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
 
   const removeAuth = async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,6 +33,10 @@ const ProtectedLayout: FC<ProtectedLayoutProps> = ({ children, userData }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [user]
   )
+
+  if (!user?.id) {
+    return <Navigate to={config.router.login}/>
+  }
 
   return <protectedLayoutContext.Provider value={value}>{children}</protectedLayoutContext.Provider>
 }

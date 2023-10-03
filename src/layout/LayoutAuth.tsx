@@ -1,5 +1,5 @@
 import { FC, ReactNode, useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 
 import authCover from "@/assets/img/illustrations/auth-cover.svg"
 import config from "@/config"
@@ -12,15 +12,11 @@ interface LayoutAuthProps {
 }
 
 const LayoutAuth: FC<LayoutAuthProps> = ({ children, textOr, textButton, pathButton }) => {
-  const navigate = useNavigate()
+  const token = localStorage.getItem("token")
 
-  useEffect(() => {
-    const token = localStorage.getItem("token")
-    if (token) {
-      navigate(config.router.home)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  if (token) {
+    return <Navigate to={config.router.home}/>
+  }
 
   return (
     <div className="flex min-h-screen">
