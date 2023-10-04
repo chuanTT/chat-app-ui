@@ -2,17 +2,6 @@ import { FC } from "react"
 import images from "@/assets/img"
 import { dateCheck } from "@/common/functions"
 
-interface ChatItemProps {
-  avatar?: string
-  first_name?: string
-  isOnline?: number
-  fullName?: string
-  messeage?: string
-  isMedia?: number
-  isMatched?: boolean
-  update_at?: string
-}
-
 const ChatItem: FC<ChatItemProps> = ({
   avatar,
   isOnline,
@@ -21,17 +10,19 @@ const ChatItem: FC<ChatItemProps> = ({
   isMedia,
   isMatched,
   first_name,
-  update_at
+  update_at,
+  handelClick
 }) => {
   return (
     <button
       type="button"
       className={`w-full flex justify-between items-center p-2 hover:bg-gray-100 dark:hover:bg-[#050b14] rounded-md dark:hover:text-primary hover:text-primary `}
+      onClick={() => handelClick && handelClick()}
     >
       <div className="flex items-center w-full">
         <div className="flex-shrink-0 relative">
           <img src={avatar ?? images.defaultAvatar} className="rounded-full h-12 w-12 object-cover" alt="avatar" />
-          {isOnline && (
+          {!!isOnline && (
             <div>
               <div className="absolute -bottom-[3px] -right-[3px] bg-white rounded-full overflow-hidden p-[3px]">
                 <div className="w-3 h-3 bg-success rounded-full"></div>

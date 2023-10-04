@@ -4,7 +4,7 @@ import images from "@/assets/img"
 
 interface BoxMesseageProps {
   src?: string
-  messeage?: string
+  messeage?: string | null
   isActive?: boolean
   date?: string
 }

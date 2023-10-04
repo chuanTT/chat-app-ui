@@ -1,5 +1,5 @@
-import { FC, ReactNode, useEffect } from "react"
-import { Link, Navigate, useNavigate } from "react-router-dom"
+import { FC, ReactNode } from "react"
+import { Link, Navigate } from "react-router-dom"
 
 import authCover from "@/assets/img/illustrations/auth-cover.svg"
 import config from "@/config"
@@ -15,7 +15,7 @@ const LayoutAuth: FC<LayoutAuthProps> = ({ children, textOr, textButton, pathBut
   const token = localStorage.getItem("token")
 
   if (token) {
-    return <Navigate to={config.router.home}/>
+    return <Navigate to={config.router.home} />
   }
 
   return (

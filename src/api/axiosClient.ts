@@ -33,6 +33,11 @@ axiosClient.interceptors.response.use(
     return response.data
   },
   function (error) {
+    if (error.response.status === 401) {
+      localStorage.removeItem(config.localKey.token)
+      document.location.replace(config.router.login)
+    }
+
     return Promise.reject(error)
   }
 )

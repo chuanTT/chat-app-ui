@@ -72,6 +72,13 @@ declare global {
     updated_at?: string
   }
 
+  interface roomSetting {
+    friend?: userData
+    settings?: {
+      is_block: number
+    }
+  }
+
   interface dataProvider {
     user?: userData
     token?: string
@@ -98,6 +105,37 @@ declare global {
       is_media: number
       updated_at: string
     }
+  }
+
+  interface ChatItemProps {
+    room_id?: number
+    avatar?: string
+    first_name?: string
+    isOnline?: number
+    fullName?: string
+    messeage?: string
+    isMedia?: number
+    isMatched?: boolean
+    update_at?: string
+    handelClick?: () => void
+  }
+
+  interface RoomDetails {
+    id: number
+    is_edit: number
+    list_media: []
+    user: {
+      id: number
+      full_name: string | null
+      first_name: string | null
+      last_name: string
+      username: string
+      avatar: string
+    }
+    messeage: string | null
+    room_id: number
+    created_at: string
+    updated_at: string
   }
 }
 
