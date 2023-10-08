@@ -222,6 +222,32 @@ body.dark {
   @apply bg-success;
 }
 
+.shadow-menu {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  animation: open 0.3s;
+  transform-origin: top left;
+}
+
+@keyframes open {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes skelSwoosh {
+  0%,
+  10% {
+    transform: translateX(-30%) scaleX(0.3);
+  }
+  100% {
+    transform: translateX(100%) scaleX(1);
+  }
+}
+
 ::-webkit-scrollbar {
   width: 2px;
 }

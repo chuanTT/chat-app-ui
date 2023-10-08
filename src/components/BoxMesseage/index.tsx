@@ -22,7 +22,7 @@ const BoxMesseage: FC<BoxMesseageProps> = ({ src, messeage, isActive, date }) =>
         <div className="flex items-center gap-3">
           <div className={`p-4 py-2 rounded-md ${isActive ? "!bg-primary text-white" : "bg-black/10"}`}>{messeage}</div>
         </div>
-        <div className={`text-xs text-white-dark text-left`}>{date}</div>
+        <div className={`text-xs text-white-dark ${isActive ? "text-right" : "text-left"}`}>{date}</div>
       </div>
     </div>
   )

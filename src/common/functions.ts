@@ -25,7 +25,7 @@ export const isEmptyObj = (obj: typeObject) => {
   return emty
 }
 
-export const MsgType = (title: string, error = true) => {
+export const MsgType = (title: string, error = true): ToastConfig => {
   return {
     title,
     type: error ? "error" : "success"

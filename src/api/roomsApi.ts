@@ -11,4 +11,13 @@ const getSettingsRoom = (url: string) => {
   return HTTP.get(`${tableRoom}/${url}`)
 }
 
-export { getRoom, tableRoom, getSettingsRoom, tableRoomSetting }
+const checkRoom = (url: string) => {
+  return HTTP.get(`${tableRoom}${url}`)
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const chatRoom = (data: any) => {
+  return HTTP.post(`${tableRoom}/chat`, data)
+}
+
+export { getRoom, tableRoom, getSettingsRoom, tableRoomSetting, chatRoom, checkRoom }

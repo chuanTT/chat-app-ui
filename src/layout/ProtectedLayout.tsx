@@ -2,6 +2,7 @@ import { Navigate, useNavigate } from "react-router-dom"
 import config from "@/config"
 import { FC, createContext, useContext, useMemo, useState, ReactNode } from "react"
 import { LogoutApi } from "@/api/authApi"
+import SocketContextLayout from "./SocketContextLayout"
 
 const protectedLayoutContext = createContext({})
 
@@ -35,10 +36,14 @@ const ProtectedLayout: FC<ProtectedLayoutProps> = ({ children, userData }) => {
   )
 
   if (!user?.id) {
-    return <Navigate to={config.router.login}/>
+    return <Navigate to={config.router.login} />
   }
 
-  return <protectedLayoutContext.Provider value={value}>{children}</protectedLayoutContext.Provider>
+  return (
+    <protectedLayoutContext.Provider value={value}>
+      <SocketContextLayout>{children}</SocketContextLayout>
+    </protectedLayoutContext.Provider>
+  )
 }
 
 export const useProtectedLayout = () => {

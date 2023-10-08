@@ -13,6 +13,7 @@ export interface ButtonProps extends HTMLAttributes<HTMLElement> {
   wIcon?: number
   hIcon?: number
   isPending?: boolean
+  hiddenLoading?: boolean
   isOutline?: boolean
   size?: "lg" | "sm"
   isReset?: boolean
@@ -37,6 +38,7 @@ const Button: FC<ButtonProps> = ({
   isPending,
   isOutline,
   bgColor = "primary",
+  hiddenLoading = false,
   isReset,
   size,
   sỉzeStartIcon = 20,
@@ -73,7 +75,7 @@ const Button: FC<ButtonProps> = ({
       disabled={isPending}
       {...props}
     >
-      {isPending && (
+      {isPending && !hiddenLoading && (
         <span className={`block ${children ? "mr-2" : ""} mr-2`}>
           <LoadingIcon isSpin={isPending} />
         </span>

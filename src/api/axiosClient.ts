@@ -4,7 +4,7 @@ import axios from "axios"
 export const BASE_URL = import.meta.env.VITE_APP_BASE_URL
 
 const axiosClient = axios.create({
-  baseURL: BASE_URL,
+  baseURL: `${BASE_URL}/api/v1`,
   headers: {
     Accept: "application/json"
   }
@@ -37,7 +37,6 @@ axiosClient.interceptors.response.use(
       localStorage.removeItem(config.localKey.token)
       document.location.replace(config.router.login)
     }
-
     return Promise.reject(error)
   }
 )

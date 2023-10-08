@@ -1,3 +1,4 @@
+import { SetStateAction } from "react"
 declare global {
   interface SelectDefault {
     value?: string | number
@@ -10,6 +11,15 @@ declare global {
 
   interface typeObjectAdv {
     [key: string]: string | number | Blob | FileList
+  }
+
+  type configTabPage = "mailbox" | "friend" | "invite"
+
+  interface ListRoomLeftProps {
+    setActiveFriend: Dispatch<SetStateAction<number>>
+    setUserActive: Dispatch<SetStateAction<userData>>
+    activeFriend: number
+    userActive?: userData
   }
 
   interface LoadingProps {
@@ -25,6 +35,11 @@ declare global {
     type?: "success" | "error" | "warn"
     timeEnd?: number
     CloseEvent?: () => void
+  }
+
+  interface ToastConfig {
+    title: string
+    type: ToastCustomProps["type"]
   }
 
   interface customUrlProps {
@@ -117,7 +132,17 @@ declare global {
     isMedia?: number
     isMatched?: boolean
     update_at?: string
+    isActice?: boolean
+    hiddenMesseage?: boolean
     handelClick?: () => void
+  }
+
+  type FriendItemProps = Omit<
+    ChatItemProps,
+    "handelClick" | "first_name" | "messeage" | "isMedia" | "isMatched" | "isActice" | "hiddenMesseage"
+  > & {
+    onClickMesseage?: () => void
+    onClickUnFriend?: () => void
   }
 
   interface RoomDetails {
@@ -136,6 +161,17 @@ declare global {
     room_id: number
     created_at: string
     updated_at: string
+  }
+
+  interface RoomCheck {
+    room_id?: number
+    settings?: { is_block?: number }
+  }
+
+  interface InviteResult {
+    created_at: string
+    friend_id: number
+    user: userData
   }
 }
 
