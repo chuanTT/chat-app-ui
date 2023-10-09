@@ -2,9 +2,14 @@ import http from "./axiosClient"
 
 const tableUser = "user"
 const tableFriends = "friends"
+const tableSearch = "search"
 
 const getFriends = (url: string) => {
   return http.get(`${tableUser}/${url}`)
+}
+
+const searchUser = (url: string) => {
+  return http.get(`${tableUser}${url}`)
 }
 
 const unFriend = (id: number) => {
@@ -15,4 +20,4 @@ const unFriend = (id: number) => {
   })
 }
 
-export { getFriends, tableUser, tableFriends, unFriend }
+export { getFriends, unFriend, searchUser, tableUser, tableFriends, tableSearch }
