@@ -1,56 +1,109 @@
-import { FC } from "react"
-import { BsThreeDotsVertical } from "react-icons/bs"
+import { FC, useRef, useState } from "react"
+import { FaUserPlus } from "react-icons/fa"
+import { AiTwotoneMessage } from "react-icons/ai"
+import { useMutation } from "@tanstack/react-query"
 
 import Images from "./Images"
-import DropDown from "./DropDown"
+import Button from "./Button"
+import { deleleInvite, inviteUser } from "@/api/inviteApi"
+import { MsgType } from "@/common/functions"
+import ToastCustom from "./ToastCustom"
 
-const FriendSearchItem: FC<FriendItemProps> = ({ avatar, isOnline, fullName, onClickMesseage, onClickUnFriend }) => {
+const FriendSearchItem: FC<FriendSearchProps> = ({
+  avatar,
+  isOnline,
+  fullName,
+  onClickMesseage,
+  is_invite,
+  is_friends,
+  id,
+  invalidateQueriesQueryClient
+}) => {
+  const [isOpenToast, setIsOpenToast] = useState(false)
+  const [isDisabled, setIsDisabled] = useState(false)
+  const [isCheck, setIsCheck] = useState(is_invite)
+
+  const toastMsg = useRef<ToastConfig>({ title: "", type: "warn" })
+
+  const resetFuc = () => {
+    setIsOpenToast(true)
+    setIsDisabled(false)
+  }
+
+  const { mutate } = useMutation({
+    mutationFn: (values: number) => {
+      return isCheck ? deleleInvite(values) : inviteUser(values)
+    },
+    onError: () => {
+      toastMsg.current = MsgType("Lỗi không xác định")
+      resetFuc()
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onSuccess: (context: any) => {
+      toastMsg.current = MsgType(context?.msg ?? "Thành công", false)
+      setIsCheck((prev) => !prev)
+      resetFuc()
+    }
+  })
+
   return (
-    <button type="button" className={`w-full flex justify-between items-center p-2 rounded-md`}>
-      <div className="flex items-center w-full">
-        <div className="flex-shrink-0 relative">
-          <Images src={avatar ?? ""} w={48} h={48} isRounded />
+    <ToastCustom
+      CloseEvent={() => {
+        setIsOpenToast(false)
+      }}
+      isOpenToast={isOpenToast}
+      title={toastMsg.current.title}
+      type={toastMsg.current.type}
+    >
+      <div className={`w-full flex justify-between items-center p-2 rounded-md`}>
+        <div className="flex items-center w-full">
+          <div className="flex-shrink-0 relative">
+            <Images src={avatar ?? ""} w={48} h={48} isRounded />
 
-          {!!isOnline && (
-            <div>
-              <div className="absolute -bottom-[3px] -right-[3px] bg-white rounded-full overflow-hidden p-[3px]">
-                <div className="w-3 h-3 bg-success rounded-full"></div>
+            {!!isOnline && (
+              <div>
+                <div className="absolute -bottom-[3px] -right-[3px] bg-white rounded-full overflow-hidden p-[3px]">
+                  <div className="w-3 h-3 bg-success rounded-full"></div>
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-        <div className="pl-3 text-left w-[calc(100%_-_48px)] flex justify-between items-center gap-1">
-          <p className="font-semibold whitespace-nowrap truncate">{fullName}</p>
+            )}
+          </div>
+          <div className="pl-3 text-left w-[calc(100%_-_48px)] gap-1">
+            <p className="font-semibold whitespace-nowrap truncate">{fullName}</p>
+            <div className="flex items-center gap-2 [&>*]:w-1/2">
+              {!is_friends && (
+                <Button
+                  size="sm"
+                  bgColor={`${isCheck ? "danger" : "primary"}`}
+                  className="!font-bold"
+                  hiddenLoading
+                  isPending={isDisabled}
+                  onClick={() => {
+                    id && mutate(id)
+                  }}
+                  StartIcon={isCheck ? "" : FaUserPlus}
+                  sỉzeStartIcon={16}
+                >
+                  {isCheck ? "Hủy lời mời" : "Kết bạn"}
+                </Button>
+              )}
 
-          <DropDown
-            childrenButton={
-              <BsThreeDotsVertical
-                size={26}
-                className="hover:bg-[#dcdee5] p-1 rounded-full transition-all duration-150"
-              />
-            }
-          >
-            <div className="bg-white shadow-sm p-1">
-              <div
-                onClick={onClickMesseage}
-                aria-hidden="true"
-                className="cursor-pointer p-2 flex items-center space-x-2 hover:bg-[#555] hover:text-white relative"
+              <Button
+                hiddenLoading
+                StartIcon={AiTwotoneMessage}
+                isPending={isDisabled}
+                sỉzeStartIcon={16}
+                onClick={() => onClickMesseage && onClickMesseage()}
+                bgColor="success"
+                size="sm"
               >
-                <span className="text-sm font-semibold">Nhắn tin</span>
-              </div>
-
-              <div
-                onClick={onClickUnFriend}
-                aria-hidden="true"
-                className="cursor-pointer p-2 flex items-center space-x-2 hover:bg-[#555] hover:text-white relative"
-              >
-                <span className="text-sm font-semibold">Hủy kết bạn</span>
-              </div>
+                Nhắn tin
+              </Button>
             </div>
-          </DropDown>
+          </div>
         </div>
       </div>
-    </button>
+    </ToastCustom>
   )
 }
 

@@ -70,9 +70,8 @@ const ModalUnFriend: FC<ModalUnFriendProps> = ({ isOpen, setIsOpen, activeUser }
             <Button
               bgColor="danger"
               isOutline
-              onClick={(e: Event) => {
-                e.preventDefault()
-                isPending && setIsOpen(false)
+              onClick={() => {
+                !isPending && setIsOpen(false)
               }}
             >
               Hủy

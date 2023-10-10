@@ -95,7 +95,7 @@ const BoxRoom: FC<BoxRoomProps> = ({ userActive }) => {
 
   return (
     <>
-      <BoxRoomHeader data={userActive ?? {}} isFetched={isFetchedRoom} />
+      <BoxRoomHeader data={(userActive?.id ? userActive : room?.friend) ?? {}} isFetched={isFetchedRoom} />
       <div className="h-px w-full border-b border-white-light dark:border-[#1b2e4b]"></div>
 
       <div

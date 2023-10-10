@@ -19,7 +19,14 @@ const Home = () => {
       >
         <HeaderSide />
 
-        <SearchComponent isFocus={isFocus} setIsFocus={setIsFocus} />
+        <SearchComponent
+          activeFriend={activeFriend}
+          setActiveFriend={setActiveFriend}
+          setUserActive={setUserActive}
+          userActive={userActive}
+          isFocus={isFocus}
+          setIsFocus={setIsFocus}
+        />
 
         {!isFocus && (
           <LoadPageRoomLeft

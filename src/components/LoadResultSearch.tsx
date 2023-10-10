@@ -1,14 +1,17 @@
 import { searchUser, tableSearch } from "@/api/userApi"
 import useFetchingApi from "@/hooks/useFetchingApi"
-import { FC, memo, useEffect } from "react"
+import { FC, memo, useEffect, useState } from "react"
 import { LoadingIcon } from "./Icons"
 import FriendSearchItem from "./FriendSearchItem"
+import { useSearchParams } from "react-router-dom"
 
-interface LoadResultSearchProps {
+interface LoadResultSearchProps extends ListRoomLeftProps {
   search?: string
 }
 
-const LoadResultSearch: FC<LoadResultSearchProps> = ({ search }) => {
+const LoadResultSearch: FC<LoadResultSearchProps> = ({ search, setActiveFriend, setUserActive }) => {
+  const [, setSearchParams] = useSearchParams()
+  const [dataSearch, setDataSearch] = useState<seacrhUserData[]>([])
   const {
     data: result,
     refetch,
@@ -38,30 +41,53 @@ const LoadResultSearch: FC<LoadResultSearchProps> = ({ search }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search])
 
+  useEffect(() => {
+    if (result?.data?.data) {
+      setDataSearch(result?.data?.data)
+    }
+  }, [result])
+
   return (
-    <div className="!mt-0 h-[calc(100vh_-_216px)] overflow-x-hidden overflow-y-auto">
-      {search && <p className="whitespace-nowrap font-medium text-sm mt-3">Tìm kiếm ký tự chứa &quot;{search}&quot;</p>}
-
-      <div className="mt-5">
-        {result?.data?.data &&
-          result?.data?.data?.map((item: userData, index: number) => {
-            return (
-              <FriendSearchItem
-                fullName={item?.full_name ?? ""}
-                isOnline={item?.is_online}
-                avatar={item?.avatar ?? ""}
-                key={index}
-              />
-            )
-          })}
-      </div>
-
-      {!isFetched && !!search && (
-        <div className="flex justify-center mt-5">
-          <LoadingIcon isSpin />
-        </div>
+    <>
+      {!!search && (
+        <p className="whitespace-nowrap font-medium text-sm mb-3">Tìm kiếm ký tự chứa &quot;{search}&quot;</p>
       )}
-    </div>
+      <div className="h-[calc(100vh_-_180px)] overflow-x-hidden overflow-y-auto scroll_search !mt-3">
+        {!isFetched && !!search && (
+          <div className="flex justify-center mb-2">
+            <LoadingIcon isSpin />
+          </div>
+        )}
+
+        {isFetched && (
+          <div>
+            {dataSearch &&
+              dataSearch?.map((item: seacrhUserData, index: number) => {
+                return (
+                  <FriendSearchItem
+                    fullName={item?.full_name ?? ""}
+                    isOnline={item?.is_online}
+                    avatar={item?.avatar ?? ""}
+                    is_friends={item?.is_friend}
+                    id={item?.id}
+                    is_invite={item?.is_invite}
+                    onClickMesseage={() => {
+                      setUserActive(item)
+                      if (item?.id) {
+                        setActiveFriend(item?.id)
+                        setSearchParams({
+                          friend_id: item.id.toString()
+                        })
+                      }
+                    }}
+                    key={index}
+                  />
+                )
+              })}
+          </div>
+        )}
+      </div>
+    </>
   )
 }
 

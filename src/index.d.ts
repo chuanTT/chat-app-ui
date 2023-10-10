@@ -145,6 +145,12 @@ declare global {
     onClickUnFriend?: () => void
   }
 
+  type FriendSearchProps = FriendItemProps & {
+    is_friends?: boolean
+    is_invite?: boolean
+    id?: number
+  }
+
   interface RoomDetails {
     id: number
     is_edit: number
@@ -165,6 +171,7 @@ declare global {
 
   interface RoomCheck {
     room_id?: number
+    friend?: userData
     settings?: { is_block?: number }
   }
 
@@ -172,6 +179,11 @@ declare global {
     created_at: string
     friend_id: number
     user: userData
+  }
+
+  type seacrhUserData = userData & {
+    is_friend?: boolean
+    is_invite?: boolean
   }
 }
 

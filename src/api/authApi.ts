@@ -13,7 +13,7 @@ const verifyToken = (url?: string) => {
 }
 
 const LogoutApi = () => {
-  return HTTP.get("/auth/logout")
+  return HTTP.post("/auth/logout")
 }
 
 export { LoginApi, verifyToken, LogoutApi, ResgiterApi }

@@ -26,9 +26,6 @@ const ListRoomLeft: FC<ListRoomLeftProps> = ({ setActiveFriend, setUserActive, a
       const currentUser = newRoomList.find((user) => user.friend?.id === Number(friend_id ?? 0))
       if (currentUser) {
         setUserActive && setUserActive(currentUser?.friend ?? {})
-      } else {
-        setSearchParams()
-        setActiveFriend(0)
       }
       setListUser(newRoomList)
     }

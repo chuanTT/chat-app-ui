@@ -17,12 +17,10 @@ const ProtectedLayout: FC<ProtectedLayoutProps> = ({ children, userData }) => {
 
   const removeAuth = async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data: any = await LogoutApi()
-    if (data?.code === 200) {
-      setUser({})
-      localStorage.setItem(config.localKey.token, "")
-      navigate("/login", { replace: true })
-    }
+    await LogoutApi()
+    setUser({})
+    localStorage.setItem(config.localKey.token, "")
+    navigate("/login", { replace: true })
   }
 
   const value = useMemo(
