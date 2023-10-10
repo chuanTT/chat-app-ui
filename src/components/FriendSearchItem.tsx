@@ -16,8 +16,7 @@ const FriendSearchItem: FC<FriendSearchProps> = ({
   onClickMesseage,
   is_invite,
   is_friends,
-  id,
-  invalidateQueriesQueryClient
+  id
 }) => {
   const [isOpenToast, setIsOpenToast] = useState(false)
   const [isDisabled, setIsDisabled] = useState(false)
