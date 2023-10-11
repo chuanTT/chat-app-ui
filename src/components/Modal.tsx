@@ -81,7 +81,7 @@ const Modal: FC<ModalProps> = ({
   return (
     <Portal>
       <div
-        className="font-sans fixed bottom-0 top-0 inset-x-0 px-4 pb-4 inset-0 flex items-center justify-center z-[2000]"
+        className="font-sans fixed bottom-0 top-0 inset-x-0 px-4 pb-4 inset-0 flex items-center justify-center z-[50]"
         ref={containerModal}
         style={{ display: "none" }}
       >

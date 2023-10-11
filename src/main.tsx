@@ -23,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
       <ToastContainer />
+      <div id="react-date"></div>
       {/* <ReactQueryDevtools position="bottom-right" initialIsOpen={false} /> */}
     </QueryClientProvider>
   </React.StrictMode>

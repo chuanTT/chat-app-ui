@@ -9,7 +9,6 @@ import SearchComponent from "@/components/SearchComponent"
 
 const Home = () => {
   const [activeFriend, setActiveFriend] = useState(0)
-  const [userActive, setUserActive] = useState<userData>({})
   const [isFocus, setIsFocus] = useState(false)
 
   return (
@@ -22,20 +21,11 @@ const Home = () => {
         <SearchComponent
           activeFriend={activeFriend}
           setActiveFriend={setActiveFriend}
-          setUserActive={setUserActive}
-          userActive={userActive}
           isFocus={isFocus}
           setIsFocus={setIsFocus}
         />
 
-        {!isFocus && (
-          <LoadPageRoomLeft
-            activeFriend={activeFriend}
-            setActiveFriend={setActiveFriend}
-            setUserActive={setUserActive}
-            userActive={userActive}
-          />
-        )}
+        {!isFocus && <LoadPageRoomLeft activeFriend={activeFriend} setActiveFriend={setActiveFriend} />}
       </div>
       <div className="panel p-0 flex-1">
         {!activeFriend && (
@@ -49,7 +39,7 @@ const Home = () => {
         )}
         {!!activeFriend && (
           <LayoutChatProvider friend_id={activeFriend}>
-            <BoxRoom userActive={userActive} />
+            <BoxRoom />
           </LayoutChatProvider>
         )}
       </div>

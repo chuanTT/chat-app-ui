@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useRef, useState } from "react"
+import { memo, useEffect, useRef, useState } from "react"
 
 import { LoadingIcon } from "@/components/Icons"
 import BoxMesseage from "@/components/BoxMesseage"
@@ -11,11 +11,7 @@ import { useProtectedLayout } from "@/layout/ProtectedLayout"
 import { useChatProvider } from "@/layout/LayoutChatProvider"
 import ControlBoxMesseage from "./ControlBoxMesseage"
 
-interface BoxRoomProps {
-  userActive?: userData
-}
-
-const BoxRoom: FC<BoxRoomProps> = ({ userActive }) => {
+const BoxRoom = () => {
   const { user } = useProtectedLayout()
   const { room, isFetched: isFetchedRoom } = useChatProvider()
   const oldRoom = useRef(0)
@@ -95,7 +91,7 @@ const BoxRoom: FC<BoxRoomProps> = ({ userActive }) => {
 
   return (
     <>
-      <BoxRoomHeader data={(userActive?.id ? userActive : room?.friend) ?? {}} isFetched={isFetchedRoom} />
+      <BoxRoomHeader data={room?.friend} isFetched={isFetchedRoom} />
       <div className="h-px w-full border-b border-white-light dark:border-[#1b2e4b]"></div>
 
       <div

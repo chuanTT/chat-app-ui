@@ -7,7 +7,7 @@ import { getRoom, tableRoom } from "@/api/roomsApi"
 import { useProtectedLayout } from "@/layout/ProtectedLayout"
 import { LoadingIcon } from "@/components/Icons"
 
-const ListRoomLeft: FC<ListRoomLeftProps> = ({ setActiveFriend, setUserActive, activeFriend }) => {
+const ListRoomLeft: FC<ListRoomLeftProps> = ({ setActiveFriend, activeFriend }) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const { user } = useProtectedLayout()
   const [listUser, setListUser] = useState<roomResult[]>()
@@ -21,12 +21,7 @@ const ListRoomLeft: FC<ListRoomLeftProps> = ({ setActiveFriend, setUserActive, a
 
   useEffect(() => {
     if (resultRoom?.data?.data) {
-      const friend_id = searchParams.get("friend_id")
       const newRoomList = resultRoom?.data?.data as roomResult[]
-      const currentUser = newRoomList.find((user) => user.friend?.id === Number(friend_id ?? 0))
-      if (currentUser) {
-        setUserActive && setUserActive(currentUser?.friend ?? {})
-      }
       setListUser(newRoomList)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,7 +44,6 @@ const ListRoomLeft: FC<ListRoomLeftProps> = ({ setActiveFriend, setUserActive, a
               handelClick={() => {
                 const friend_id = item?.friend?.id
                 friend_id && setActiveFriend(friend_id)
-                setUserActive(item?.friend ?? {})
                 setSearchParams({
                   friend_id: friend_id?.toString() ?? ""
                 })

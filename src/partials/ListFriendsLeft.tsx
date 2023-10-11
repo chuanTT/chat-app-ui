@@ -7,9 +7,10 @@ import FriendItem from "@/components/FriendItem"
 import ModalUnFriend from "./ModalUnFriend"
 import { LoadingIcon } from "@/components/Icons"
 
-const ListFriendsLeft: FC<ListRoomLeftProps> = ({ setActiveFriend, setUserActive, userActive }) => {
+const ListFriendsLeft: FC<ListRoomLeftProps> = ({ setActiveFriend }) => {
   const [, setSearchParams] = useSearchParams()
   const [isOpen, setIsOpen] = useState(false)
+  const [userActive, setUserActive] = useState<userData>({})
   const [ListFriends, setListFriends] = useState<userData[]>([])
   const { data: resultFriends, isFetched } = useFetchingApi({
     nameTable: tableFriends,
@@ -35,7 +36,6 @@ const ListFriendsLeft: FC<ListRoomLeftProps> = ({ setActiveFriend, setUserActive
                 setIsOpen(true)
               }}
               onClickMesseage={() => {
-                setUserActive(item)
                 if (item?.id) {
                   setActiveFriend(item?.id)
                   setSearchParams({

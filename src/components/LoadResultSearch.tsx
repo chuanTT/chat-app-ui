@@ -9,7 +9,7 @@ interface LoadResultSearchProps extends ListRoomLeftProps {
   search?: string
 }
 
-const LoadResultSearch: FC<LoadResultSearchProps> = ({ search, setActiveFriend, setUserActive }) => {
+const LoadResultSearch: FC<LoadResultSearchProps> = ({ search, setActiveFriend }) => {
   const [, setSearchParams] = useSearchParams()
   const [dataSearch, setDataSearch] = useState<seacrhUserData[]>([])
   const {
@@ -72,7 +72,6 @@ const LoadResultSearch: FC<LoadResultSearchProps> = ({ search, setActiveFriend, 
                     id={item?.id}
                     is_invite={item?.is_invite}
                     onClickMesseage={() => {
-                      setUserActive(item)
                       if (item?.id) {
                         setActiveFriend(item?.id)
                         setSearchParams({

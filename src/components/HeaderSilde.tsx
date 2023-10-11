@@ -1,10 +1,14 @@
+import { useState } from "react"
 import { useProtectedLayout } from "@/layout/ProtectedLayout"
 import Images from "./Images"
 import DropDown from "./DropDown"
 import { BsThreeDotsVertical } from "react-icons/bs"
+import ModalUpdateUser from "@/partials/ModalUpdateUser"
 
 const HeaderSide = () => {
   const { user, removeAuth } = useProtectedLayout()
+  const [isOpen, setIsOpen] = useState(false)
+
   return (
     <div className="flex justify-between items-center">
       <div className="flex items-center w-[calc(100%_-_26px)] pr-1">
@@ -28,6 +32,7 @@ const HeaderSide = () => {
         <div className="bg-white shadow-sm p-1">
           <div
             aria-hidden="true"
+            onClick={() => setIsOpen(true)}
             className="cursor-pointer p-2 flex items-center space-x-2 hover:bg-[#555] hover:text-white relative"
           >
             <span className="text-sm font-semibold">Thông tin cá nhân</span>
@@ -46,6 +51,8 @@ const HeaderSide = () => {
           </div>
         </div>
       </DropDown>
+
+      <ModalUpdateUser isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   )
 }

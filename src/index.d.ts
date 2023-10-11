@@ -17,9 +17,7 @@ declare global {
 
   interface ListRoomLeftProps {
     setActiveFriend: Dispatch<SetStateAction<number>>
-    setUserActive: Dispatch<SetStateAction<userData>>
-    activeFriend: number
-    userActive?: userData
+    activeFriend?: number
   }
 
   interface LoadingProps {

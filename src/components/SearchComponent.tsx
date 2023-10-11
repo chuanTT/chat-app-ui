@@ -10,13 +10,7 @@ interface SearchComponentProps extends ListRoomLeftProps {
   setIsFocus: Dispatch<SetStateAction<boolean>>
 }
 
-const SearchComponent: FC<SearchComponentProps> = ({
-  setIsFocus,
-  isFocus,
-  setActiveFriend,
-  setUserActive,
-  activeFriend
-}) => {
+const SearchComponent: FC<SearchComponentProps> = ({ setIsFocus, isFocus, setActiveFriend }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [value, setValue] = useState("")
   const [debouncedValue, setDebouncedValue] = useDebouncedValue(value, 1000)
@@ -96,14 +90,7 @@ const SearchComponent: FC<SearchComponentProps> = ({
         </div>
       </div>
 
-      {isFocus && (
-        <LoadResultSearch
-          activeFriend={activeFriend}
-          search={debouncedValue}
-          setActiveFriend={setActiveFriend}
-          setUserActive={setUserActive}
-        />
-      )}
+      {isFocus && <LoadResultSearch search={debouncedValue} setActiveFriend={setActiveFriend} />}
     </>
   )
 }

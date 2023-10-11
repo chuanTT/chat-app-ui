@@ -24,7 +24,7 @@ const LoadControl: LoadControlType[] = [
   }
 ]
 
-const LoadPageRoomLeft: FC<ListRoomLeftProps> = ({ activeFriend, setUserActive, setActiveFriend, userActive }) => {
+const LoadPageRoomLeft: FC<ListRoomLeftProps> = ({ activeFriend, setActiveFriend }) => {
   const [tab, setTab] = useState<configTabPage>("mailbox")
 
   return (
@@ -44,17 +44,8 @@ const LoadPageRoomLeft: FC<ListRoomLeftProps> = ({ activeFriend, setUserActive, 
         })}
       </div>
       <div className="!mt-0 h-[calc(100vh_-_216px)] overflow-x-hidden overflow-y-auto">
-        {tab === "mailbox" && (
-          <ListRoomLeft activeFriend={activeFriend} setActiveFriend={setActiveFriend} setUserActive={setUserActive} />
-        )}
-        {tab === "friend" && (
-          <ListFriendsLeft
-            activeFriend={activeFriend}
-            setActiveFriend={setActiveFriend}
-            setUserActive={setUserActive}
-            userActive={userActive}
-          />
-        )}
+        {tab === "mailbox" && <ListRoomLeft activeFriend={activeFriend} setActiveFriend={setActiveFriend} />}
+        {tab === "friend" && <ListFriendsLeft activeFriend={activeFriend} setActiveFriend={setActiveFriend} />}
         {tab === "invite" && <InvitePage />}
       </div>
     </>
