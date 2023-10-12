@@ -1,32 +1,19 @@
-import { ChangeEvent, FC, useEffect, useRef, useState } from "react"
-import { FieldValues, UseFormRegister, UseFormSetValue } from "react-hook-form"
+import { ChangeEvent, ForwardedRef, useEffect, useImperativeHandle, useRef, useState, forwardRef } from "react"
 import { FaCamera } from "react-icons/fa"
 
-interface ImagesUploadFieldProps {
-  classWapper?: string
-  defaultSrc?: string
-  classParentImg?: string
-  register?: UseFormRegister<FieldValues>
-  name: string
-  validType?: string[]
-  msgSize?: string
-  sizeFile?: number
-  msgType?: string
-  setValue?: UseFormSetValue<FieldValues>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setFieldError?: any
-}
-
-const ImagesUploadField: FC<ImagesUploadFieldProps> = ({
-  register,
-  name,
-  msgSize = "Không được vượt quá định dạng",
-  sizeFile = 5,
-  validType = ["image/jpg", "image/jpeg", "image/png"],
-  msgType = "File không đúng dịnh dạng",
-  setFieldError,
-  setValue
-}) => {
+const ImagesUpload = (
+  {
+    register,
+    name,
+    msgSize = "Không được vượt quá định dạng",
+    sizeFile = 5,
+    validType = ["image/jpg", "image/jpeg", "image/png"],
+    msgType = "File không đúng dịnh dạng",
+    setFieldError,
+    setValue
+  }: ImagesUploadFieldProps,
+  ref: ForwardedRef<refListImage>
+) => {
   const dataFile = useRef(new DataTransfer())
   const InputFile = useRef<HTMLInputElement>(null)
   const [src, setSrc] = useState<string>("")
@@ -75,6 +62,20 @@ const ImagesUploadField: FC<ImagesUploadFieldProps> = ({
     }
   }
 
+  useImperativeHandle(ref, () => {
+    return {
+      clearImage: () => {
+        setSrc("")
+        if (dataFile.current) {
+          dataFile.current.items.clear()
+        }
+      },
+      setImage: (src: string) => {
+        setSrc(src)
+      }
+    }
+  })
+
   return (
     <div className="w-28 h-28 rounded-full mx-auto relative overflow-hidden group">
       <img
@@ -106,5 +107,7 @@ const ImagesUploadField: FC<ImagesUploadFieldProps> = ({
     </div>
   )
 }
+
+const ImagesUploadField = forwardRef(ImagesUpload)
 
 export default ImagesUploadField

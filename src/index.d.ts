@@ -1,4 +1,4 @@
-import { SetStateAction } from "react"
+import { ReactNode, SetStateAction } from "react"
 declare global {
   interface SelectDefault {
     value?: string | number
@@ -38,6 +38,44 @@ declare global {
   interface ToastConfig {
     title: string
     type: ToastCustomProps["type"]
+  }
+
+  interface ImagesUploadFieldProps {
+    classWapper?: string
+    defaultSrc?: string
+    classParentImg?: string
+    register?: UseFormRegister<FieldValues>
+    name: string
+    validType?: string[]
+    msgSize?: string
+    sizeFile?: number
+    msgType?: string
+    setValue?: UseFormSetValue<FieldValues>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setFieldError?: any
+  }
+
+  type ImagesUploadCustomType = Omit<ImagesUploadFieldProps, "setFieldError" | "setValue"> & {
+    children?: ReactNode
+    onChangeFile?: (src?: string) => void
+  }
+
+  interface refListImage {
+    clearImage?: () => void
+    setImage?: (str: string) => void
+  }
+
+  type refImageCus = refListImage & {
+    getSrc: () => string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    getFile: () => any
+  }
+
+  type chatForm = {
+    messeage?: string
+    room_id?: number
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    media?: any
   }
 
   interface customUrlProps {

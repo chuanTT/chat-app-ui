@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { forwardRef, useImperativeHandle, useRef, useState, useEffect, ForwardRefRenderFunction } from "react"
 import { FieldValues, UseFormSetValue } from "react-hook-form"
@@ -5,7 +6,7 @@ import moment from "moment"
 import DatePicker, { ReactDatePickerProps } from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
-type reactDatePick = Omit<ReactDatePickerProps, 'onChange'>
+type reactDatePick = Omit<ReactDatePickerProps, "onChange">
 
 export interface InputPriceProps {
   name: string

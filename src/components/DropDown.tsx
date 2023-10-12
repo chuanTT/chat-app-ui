@@ -19,9 +19,16 @@ const DropDown: FC<DropDownProps> = ({ children, childrenButton }) => {
         menuElement.style.opacity = "1"
         menuElement.style.visibility = "visible"
         const { top, left, height, width } = buttonElement.getBoundingClientRect()
-        const { width: widthMenu } = menuElement.getBoundingClientRect()
+        const { width: widthMenu, height: heightMenu } = menuElement.getBoundingClientRect()
+        const heightWindown = window.innerHeight
+        const maxHeight = top + height + heightMenu
 
-        menuElement.style.top = `${top + height + 2}px`
+        if (maxHeight > heightWindown) {
+          menuElement.style.top = `${top - heightMenu - 2}px`
+        } else {
+          menuElement.style.top = `${top + height + 2}px`
+        }
+
         menuElement.style.left = `${left - widthMenu + width}px`
         menuElement.classList.add("open")
       } else {
