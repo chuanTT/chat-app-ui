@@ -78,7 +78,7 @@ const ImagesUploadField: FC<ImagesUploadFieldProps> = ({
   return (
     <div className="w-28 h-28 rounded-full mx-auto relative overflow-hidden group">
       <img
-        src={src ?? "https://api.chuandinh.click/avatar/default/male_3.png"}
+        src={src || "https://api.chuandinh.click/avatar/default/male_3.png"}
         alt="img"
         className="w-28 h-28 rounded-full object-cover mx-auto"
       />

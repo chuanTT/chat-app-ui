@@ -8,6 +8,14 @@ const getFriends = (url: string) => {
   return http.get(`${tableUser}/${url}`)
 }
 
+const getMe = (url: string) => {
+  return http.get(url)
+}
+
+const updateUser = (data: string) => {
+  return http.patch(`${tableUser}`, data)
+}
+
 const searchUser = (url: string) => {
   return http.get(`${tableUser}${url}`)
 }
@@ -20,4 +28,4 @@ const unFriend = (id: number) => {
   })
 }
 
-export { getFriends, unFriend, searchUser, tableUser, tableFriends, tableSearch }
+export { getFriends, unFriend, searchUser, getMe, updateUser, tableUser, tableFriends, tableSearch }

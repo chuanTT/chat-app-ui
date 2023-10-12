@@ -1,29 +1,32 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { forwardRef, useImperativeHandle, useRef, useState, useEffect, ForwardRefRenderFunction } from "react"
 import { FieldValues, UseFormSetValue } from "react-hook-form"
+import moment from "moment"
 import DatePicker, { ReactDatePickerProps } from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
-type reactDate = Omit<ReactDatePickerProps, "onChange">
+type reactDatePick = Omit<ReactDatePickerProps, 'onChange'>
 
-interface InputPriceProps {
+export interface InputPriceProps {
   name: string
   classDate?: string
   setValue?: UseFormSetValue<FieldValues>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange?: (date: any) => void
   isRange?: boolean
   placeholder?: string
   title?: string
   isRequire?: boolean
-  rest?: reactDate
+  rest?: reactDatePick
   isInit?: boolean
+  classContainerDate?: string
 }
 
-export interface RefType {
+export interface RefTypeDate {
   clearValue?: () => void
-  setValue?: (value: string | number) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setValue?: (date: any, strFormat?: string) => void
 }
-const DatePickerCustom: ForwardRefRenderFunction<RefType, InputPriceProps> = (
+const DatePickerCustom: ForwardRefRenderFunction<RefTypeDate, InputPriceProps> = (
   {
     name,
     setValue,
@@ -34,6 +37,7 @@ const DatePickerCustom: ForwardRefRenderFunction<RefType, InputPriceProps> = (
     title,
     isRequire,
     isInit,
+    classContainerDate,
     rest
   },
   ref
@@ -42,10 +46,16 @@ const DatePickerCustom: ForwardRefRenderFunction<RefType, InputPriceProps> = (
     let date = null
     if (isInit) {
       date = new Date()
+      if (setValue) {
+        setValue(name, isRange ? [date, date] : date)
+      }
     }
     return isRange ? [date, date] : date
   })
-  const [updated, setUpdated] = useState({ update: false, data: null })
+  const [updated, setUpdated] = useState<{ update: boolean; data: Date | Date[] | null }>({
+    update: false,
+    data: null
+  })
 
   useEffect(() => {
     if (updated?.update) {
@@ -68,25 +78,33 @@ const DatePickerCustom: ForwardRefRenderFunction<RefType, InputPriceProps> = (
     () => {
       return {
         clearValue: () => {
-          setStartDate(isRange ? [null, null] : null)
+          let date = null
+          if (isInit) {
+            date = new Date()
+            if (setValue) {
+              setValue(name, isRange ? [date, date] : date)
+            }
+          }
+          setStartDate(isRange ? [date, date] : date)
+        },
+        setValue: (date: any, strFormat?: string) => {
+          const format = strFormat ?? "YYYY-MM-DD HH:mm:ss"
+          let d
+          if (isRange) {
+            const range = []
+            const [s1, s2] = date
+            const strS1: moment.Moment = moment(s1, format)
+            const strS2 = moment(s2, format)
+            range.push(strS1.toDate())
+            range.push(strS2.toDate())
+            d = range
+          } else {
+            const _d = moment(date, format)
+            d = _d.toDate()
+          }
+          setValue && setValue(name, d)
+          setUpdated({ update: !updated?.update, data: d })
         }
-        // setValue: (date: any, strFormat = 'YYYY-MM-DD HH:mm:ss') => {
-        //     // let d;
-        //     // if (isRange) {
-        //     //     const range = [];
-        //     //     const [s1, s2] = date;
-        //     //     const { _d: strS1 } = moment(s1, strFormat);
-        //     //     const { _d: strS2 } = moment(s2, strFormat);
-        //     //     range.push(strS1);
-        //     //     range.push(strS2);
-        //     //     d = range;
-        //     // } else {
-        //     //     const { _d } = moment(date, strFormat);
-        //     //     d = _d;
-        //     // }
-        //     // setValue && setValue(name, d);
-        //     // setUpdated({ update: !updated?.update, data: d });
-        // },
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,7 +113,6 @@ const DatePickerCustom: ForwardRefRenderFunction<RefType, InputPriceProps> = (
 
   const options = useRef<ReactDatePickerProps>({
     ...rest,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onChange: (date: any) => {
       setStartDate(date)
       setValue && setValue(name, date)
@@ -104,7 +121,6 @@ const DatePickerCustom: ForwardRefRenderFunction<RefType, InputPriceProps> = (
   })
 
   if (isRange) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { selected, ...rest } = options.current
     const [s, e] = Array.isArray(startDate) ? startDate : []
 
@@ -121,13 +137,13 @@ const DatePickerCustom: ForwardRefRenderFunction<RefType, InputPriceProps> = (
   }
 
   return (
-    <div className="">
+    <div className={classContainerDate ?? ""}>
       {title && (
         <label className="block mb-2 text-sm font-medium text-gray-900 " htmlFor={name}>
           {title} {isRequire && <span className="text-red-500">*</span>}
         </label>
       )}
-      <div className={`relative [&>*]:w-full ${classDate}`}>
+      <div className={`relative ${classDate}`}>
         <DatePicker
           isClearable
           name={name}
@@ -135,10 +151,7 @@ const DatePickerCustom: ForwardRefRenderFunction<RefType, InputPriceProps> = (
           dateFormat="dd/MM/yyyy"
           selectsRange={isRange}
           {...options.current}
-          peekNextMonth
-          showMonthDropdown
-          showYearDropdown
-          dropdownMode="select"
+          // showMonthYearPicker
           placeholderText={placeholder}
           className="pl-9 bg-gray-50 border outline-none border-gray-300 text-gray-900 text-sm rounded block w-full p-2.5"
         />
