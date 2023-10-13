@@ -13,6 +13,7 @@ import ControlBoxMesseage from "./ControlBoxMesseage"
 
 const BoxRoom = () => {
   const { user } = useProtectedLayout()
+  const [page] = useState(1)
   const { room, isFetched: isFetchedRoom } = useChatProvider()
   const oldRoom = useRef(0)
   const positon = useRef({
@@ -29,6 +30,8 @@ const BoxRoom = () => {
     nameTable: tableRoom,
     CallAPi: getRoom,
     isConfig: false,
+    page,
+    limit: 30,
     configCus: {
       refetchOnWindowFocus: false,
       enabled: false,
@@ -84,7 +87,8 @@ const BoxRoom = () => {
 
   useEffect(() => {
     if (dataRoomDetail?.data?.data) {
-      setResultRoom(dataRoomDetail?.data?.data)
+      const data = dataRoomDetail?.data?.data as RoomDetails[]
+      setResultRoom(data.reverse())
       scrollBottom()
     }
   }, [dataRoomDetail])
@@ -108,14 +112,17 @@ const BoxRoom = () => {
 
             {resultRoom &&
               oldRoom?.current === room?.room_id &&
-              resultRoom?.map((detail: RoomDetails) => {
+              resultRoom?.map((detail: RoomDetails, index: number) => {
+                const nextItem = resultRoom[++index]
                 return (
                   <BoxMesseage
+                    isContinuous={(nextItem && nextItem?.user?.id === detail?.user?.id) ?? false}
                     isActive={user?.id === detail.user.id}
                     key={detail.id}
                     messeage={detail.messeage}
                     src={detail.user.avatar}
                     date={dateCheck(detail.updated_at)}
+                    listMedia={detail?.list_media}
                   />
                 )
               })}

@@ -1,11 +1,13 @@
-import { FC } from "react"
-import { BsTelephoneFill } from "react-icons/bs"
+import { FC, useState } from "react"
+import { BsTelephoneFill, BsThreeDotsVertical } from "react-icons/bs"
 import { MdVideocam } from "react-icons/md"
 
 import { dateCheck } from "@/common/functions"
 import { useChatProvider } from "@/layout/LayoutChatProvider"
 import Images from "../Images"
 import Shimmer from "../Shimmer"
+import DropDown from "../DropDown"
+import ModalBlockRoom from "@/partials/ModalBlockRoom"
 
 interface BoxRoomHeaderProps {
   data?: userData
@@ -14,6 +16,7 @@ interface BoxRoomHeaderProps {
 
 const BoxRoomHeader: FC<BoxRoomHeaderProps> = ({ data, isFetched }) => {
   const { room } = useChatProvider()
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <div className="flex justify-between items-center p-2 pt-0">
@@ -69,17 +72,40 @@ const BoxRoomHeader: FC<BoxRoomHeaderProps> = ({ data, isFetched }) => {
         </div>
       </div>
 
-      {!!(room?.settings?.is_block === 0) && (
-        <div className="flex sm:gap-5 gap-3">
-          <button type="button">
-            <BsTelephoneFill size={19} className="hover:text-primary" />
-          </button>
+      <div className="flex sm:gap-5 gap-3">
+        {!!(room?.settings?.is_block === 0) && (
+          <>
+            <button type="button">
+              <BsTelephoneFill size={19} className="hover:text-primary" />
+            </button>
 
-          <button type="button">
-            <MdVideocam size={25} className="hover:text-primary" />
-          </button>
-        </div>
-      )}
+            <button type="button">
+              <MdVideocam size={25} className="hover:text-primary" />
+            </button>
+          </>
+        )}
+
+        <DropDown
+          childrenButton={
+            <BsThreeDotsVertical
+              size={26}
+              className="hover:bg-[#dcdee5] p-1 rounded-full transition-all duration-150 cursor-pointer"
+            />
+          }
+        >
+          <div className="bg-white shadow-sm p-1 min-w-[150px]">
+            <div
+              aria-hidden="true"
+              onClick={() => setIsOpen(true)}
+              className="cursor-pointer p-2 flex items-center space-x-2 hover:bg-[#555] hover:text-white relative"
+            >
+              <span className="text-sm font-semibold">{room?.settings?.is_block === 0 ? "Chặn" : "Bỏ chặn"}</span>
+            </div>
+          </div>
+        </DropDown>
+
+        <ModalBlockRoom isOpen={isOpen} setIsOpen={setIsOpen} />
+      </div>
     </div>
   )
 }

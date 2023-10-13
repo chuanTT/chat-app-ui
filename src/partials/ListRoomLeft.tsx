@@ -6,9 +6,12 @@ import { ChatItem } from "@/components/ChatItem"
 import { getRoom, tableRoom } from "@/api/roomsApi"
 import { useProtectedLayout } from "@/layout/ProtectedLayout"
 import { LoadingIcon } from "@/components/Icons"
+import ModalDeleteRoom from "./ModalDeleteRoom"
 
 const ListRoomLeft: FC<ListRoomLeftProps> = ({ setActiveFriend, activeFriend }) => {
   const [searchParams, setSearchParams] = useSearchParams()
+  const [isOpen, setIsOpen] = useState(false)
+  const [roomID, setRoomID] = useState(0)
   const { user } = useProtectedLayout()
   const [listUser, setListUser] = useState<roomResult[]>()
   const { data: resultRoom, isFetched } = useFetchingApi({
@@ -41,6 +44,10 @@ const ListRoomLeft: FC<ListRoomLeftProps> = ({ setActiveFriend, activeFriend }) 
         listUser?.map((item: roomResult, index: number) => {
           return (
             <ChatItem
+              onDeleteRoom={() => {
+                item?.room_id && setRoomID(item?.room_id)
+                setIsOpen(true)
+              }}
               handelClick={() => {
                 const friend_id = item?.friend?.id
                 friend_id && setActiveFriend(friend_id)
@@ -67,6 +74,8 @@ const ListRoomLeft: FC<ListRoomLeftProps> = ({ setActiveFriend, activeFriend }) 
           <LoadingIcon isSpin />
         </div>
       )}
+
+      <ModalDeleteRoom isOpen={isOpen} setIsOpen={setIsOpen} roomID={roomID} />
     </div>
   )
 }

@@ -10,6 +10,7 @@ import { chatRoom } from "@/api/roomsApi"
 import ImagesUploadCustom from "../CustomField/ImagesUpdoadCustom"
 import { isEmptyObj } from "@/common/functions"
 import SendFormData from "../FormHandel/SendFormData"
+import * as _ from "lodash"
 
 interface ControlBoxMesseageProps {
   setResultRoom: Dispatch<SetStateAction<RoomDetails[]>>
@@ -28,7 +29,9 @@ const ControlBoxMesseage: FC<ControlBoxMesseageProps> = ({ setResultRoom, scroll
   useEffect(() => {
     if (socket) {
       socket.on("messeage", (data: RoomDetails) => {
-        setResultRoom((prev) => [...prev, data])
+        setResultRoom((prev) => {
+          return _.unionBy([...prev, data], "id")
+        })
         scrollBottom()
       })
 
@@ -59,7 +62,12 @@ const ControlBoxMesseage: FC<ControlBoxMesseageProps> = ({ setResultRoom, scroll
         data = { ...data, media: file }
         data = SendFormData(data)
       }
-      await chatRoom(data)
+      const result = await chatRoom(data)
+      if (result?.data) {
+        setResultRoom((prev) => {
+          return _.unionBy([...prev, result?.data], "id")
+        })
+      }
       if (isCheckFile) {
         setSrc("")
         inputUpload.current?.clearImage?.()
@@ -67,6 +75,7 @@ const ControlBoxMesseage: FC<ControlBoxMesseageProps> = ({ setResultRoom, scroll
       setValueText("")
       setIsPending(false)
       inputRef.current?.focus()
+      scrollBottom()
     }
   }
 
@@ -78,7 +87,7 @@ const ControlBoxMesseage: FC<ControlBoxMesseageProps> = ({ setResultRoom, scroll
   }
 
   return (
-    <div className="p-4 absolute bottom-0 left-0 w-full">
+    <div className="p-4 absolute bottom-0 left-0 w-full bg-white">
       <div className="sm:flex w-full space-x-3 rtl:space-x-reverse items-center">
         <div className="items-center space-x-3 rtl:space-x-reverse sm:py-0 py-3 hidden sm:block">
           <ImagesUploadCustom

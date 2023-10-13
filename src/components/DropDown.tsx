@@ -4,9 +4,10 @@ import Portal from "./Portal"
 interface DropDownProps {
   children?: ReactNode
   childrenButton?: ReactNode
+  classButton?: string
 }
 
-const DropDown: FC<DropDownProps> = ({ children, childrenButton }) => {
+const DropDown: FC<DropDownProps> = ({ children, childrenButton, classButton }) => {
   const buttonRef = useRef<HTMLDivElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -60,7 +61,7 @@ const DropDown: FC<DropDownProps> = ({ children, childrenButton }) => {
 
   return (
     <>
-      <div ref={buttonRef} onClick={handelClick} aria-hidden="true">
+      <div ref={buttonRef} onClick={handelClick} aria-hidden="true" className={classButton ?? ""}>
         {childrenButton}
       </div>
       <Portal>

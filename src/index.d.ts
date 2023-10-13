@@ -171,6 +171,7 @@ declare global {
     isActice?: boolean
     hiddenMesseage?: boolean
     handelClick?: () => void
+    onDeleteRoom?: () => void
   }
 
   type FriendItemProps = Omit<

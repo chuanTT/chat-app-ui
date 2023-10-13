@@ -2,6 +2,8 @@ import { FC } from "react"
 
 import { dateCheck } from "@/common/functions"
 import Images from "../Images"
+import DropDown from "../DropDown"
+import { BsThreeDotsVertical } from "react-icons/bs"
 
 const ChatItem: FC<ChatItemProps> = ({
   avatar,
@@ -14,12 +16,13 @@ const ChatItem: FC<ChatItemProps> = ({
   update_at,
   isActice,
   hiddenMesseage = false,
-  handelClick
+  handelClick,
+  onDeleteRoom
 }) => {
   return (
     <button
       type="button"
-      className={`w-full flex justify-between items-center p-2 hover:bg-gray-100 dark:hover:bg-[#050b14] rounded-md  hover:text-primary ${
+      className={`w-full group  flex justify-between items-center relative p-2 hover:bg-gray-100 dark:hover:bg-[#050b14] rounded-md  hover:text-primary ${
         isActice ? "text-primary bg-gray-100" : ""
       }`}
       onClick={() => handelClick && handelClick()}
@@ -49,6 +52,21 @@ const ChatItem: FC<ChatItemProps> = ({
           )}
         </div>
       </div>
+
+      <DropDown
+        classButton="absolute right-2 invisible opacity-0 group-hover:opacity-100 group-hover:visible shadow-md border border-[#dcdee554] bg-white rounded-full hover:bg-[#dcdee533] p-1 transition-all duration-150  text-gray-500"
+        childrenButton={<BsThreeDotsVertical size={20} className="rotate-90" />}
+      >
+        <div className="bg-white shadow-sm p-1">
+          <div
+            aria-hidden="true"
+            onClick={() => onDeleteRoom && onDeleteRoom()}
+            className="cursor-pointer p-2 flex items-center space-x-2 hover:bg-[#555] hover:text-white relative"
+          >
+            <span className="text-sm font-semibold">Xóa đoạn chat</span>
+          </div>
+        </div>
+      </DropDown>
     </button>
   )
 }

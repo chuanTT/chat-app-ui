@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, ReactNode, createContext, useContext, useEffect, useMemo } from "react"
 import { useSocket } from "./SocketContextLayout"
 import useFetchingApi from "@/hooks/useFetchingApi"
@@ -51,15 +52,16 @@ const LayoutChatProvider: FC<LayoutChatProviderProps> = ({ friend_id, children }
   const values = useMemo(() => {
     return {
       room: dataRoom?.data,
-      isFetched
+      isFetched,
+      refetch: refetch
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [(dataRoom?.data as RoomCheck)?.room_id, isFetched])
+  }, [dataRoom?.data, isFetched])
 
   return <chatContentext.Provider value={values}>{children}</chatContentext.Provider>
 }
 
-export const useChatProvider = (): { room?: RoomCheck; isFetched?: boolean } => {
+export const useChatProvider = (): { room?: RoomCheck; isFetched?: boolean; refetch?: any } => {
   const result = useContext(chatContentext)
   return result
 }
