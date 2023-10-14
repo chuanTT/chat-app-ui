@@ -8,10 +8,15 @@ import { useProtectedLayout } from "@/layout/ProtectedLayout"
 import { LoadingIcon } from "@/components/Icons"
 import ModalDeleteRoom from "./ModalDeleteRoom"
 
+
+
 const ListRoomLeft: FC<ListRoomLeftProps> = ({ setActiveFriend, activeFriend }) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [isOpen, setIsOpen] = useState(false)
-  const [roomID, setRoomID] = useState(0)
+  const [dataID, setDataID] = useState<DataControlType>({
+    roomID: 0,
+    friendID: 0
+  })
   const { user } = useProtectedLayout()
   const [listUser, setListUser] = useState<roomResult[]>()
   const { data: resultRoom, isFetched } = useFetchingApi({
@@ -45,7 +50,12 @@ const ListRoomLeft: FC<ListRoomLeftProps> = ({ setActiveFriend, activeFriend }) 
           return (
             <ChatItem
               onDeleteRoom={() => {
-                item?.room_id && setRoomID(item?.room_id)
+                if (item?.room_id && item?.friend?.id) {
+                  setDataID({
+                    roomID: item?.room_id,
+                    friendID: item?.friend?.id
+                  })
+                }
                 setIsOpen(true)
               }}
               handelClick={() => {
@@ -75,7 +85,7 @@ const ListRoomLeft: FC<ListRoomLeftProps> = ({ setActiveFriend, activeFriend }) 
         </div>
       )}
 
-      <ModalDeleteRoom isOpen={isOpen} setIsOpen={setIsOpen} roomID={roomID} />
+      <ModalDeleteRoom isOpen={isOpen} setIsOpen={setIsOpen} dataID={dataID} setActiveFriend={setActiveFriend} />
     </div>
   )
 }

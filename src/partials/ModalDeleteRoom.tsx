@@ -5,14 +5,17 @@ import Button from "@/components/Button"
 import Modal from "@/components/Modal"
 import ToastCustom from "@/components/ToastCustom"
 import { deleteRoom, tableRoom } from "@/api/roomsApi"
+import { useSearchParams } from "react-router-dom"
 
 interface ModalDeleteRoomProps {
   isOpen: boolean
   setIsOpen: Dispatch<SetStateAction<boolean>>
-  roomID?: number
+  dataID?: DataControlType
+  setActiveFriend?: Dispatch<SetStateAction<number>>
 }
 
-const ModalDeleteRoom: FC<ModalDeleteRoomProps> = ({ isOpen, setIsOpen, roomID }) => {
+const ModalDeleteRoom: FC<ModalDeleteRoomProps> = ({ isOpen, setIsOpen, dataID, setActiveFriend }) => {
+  const [searchParams, setSearchParams] = useSearchParams()
   const [isOpenToast, setIsOpenToast] = useState(false)
   const [isPending, setIsPending] = useState(false)
   const queryClient = useQueryClient()
@@ -35,15 +38,21 @@ const ModalDeleteRoom: FC<ModalDeleteRoomProps> = ({ isOpen, setIsOpen, roomID }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: (context: any) => {
       toastMsg.current = MsgType(context?.msg ?? "Xoá thành công", false)
+      const friend_id = searchParams.get("friend_id")
+      
+      if(Number(friend_id) === dataID?.friendID) {
+        setSearchParams({})
+        setActiveFriend && setActiveFriend(0)
+      }
       queryClient.invalidateQueries([tableRoom])
       resetFuc()
     }
   })
 
   const handelUnFriend = () => {
-    if (roomID && roomID !== 0) {
+    if (dataID?.roomID && dataID?.roomID !== 0) {
       setIsPending(true)
-      mutate(roomID)
+      mutate(dataID?.roomID)
     }
   }
 

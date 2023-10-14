@@ -55,6 +55,11 @@ declare global {
     setFieldError?: any
   }
 
+  type DataControlType = {
+    roomID?: number
+    friendID?: number
+  }
+
   type ImagesUploadCustomType = Omit<ImagesUploadFieldProps, "setFieldError" | "setValue"> & {
     children?: ReactNode
     onChangeFile?: (src?: string) => void
