@@ -52,7 +52,7 @@ const HeaderSide = () => {
         </div>
       </DropDown>
 
-      <ModalUpdateUser isOpen={isOpen} setIsOpen={setIsOpen} />
+      {isOpen && <ModalUpdateUser isOpen={isOpen} setIsOpen={setIsOpen} />}
     </div>
   )
 }

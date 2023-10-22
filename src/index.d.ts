@@ -227,6 +227,8 @@ declare global {
     is_friend?: boolean
     is_invite?: boolean
   }
+
+  type callerRoom = { caller_id?: string; receiver_id?: number; room_id?: number }
 }
 
 export {}

@@ -1,4 +1,4 @@
-import { Dispatch, FC, ReactNode, SetStateAction, useEffect, useRef, MouseEvent } from "react"
+import { Dispatch, FC, ReactNode, SetStateAction, useEffect, useRef, MouseEvent, useState } from "react"
 import Portal from "./Portal"
 
 interface ModalProps {
@@ -80,26 +80,28 @@ const Modal: FC<ModalProps> = ({
 
   return (
     <Portal>
-      <div
-        className="font-sans fixed bottom-0 top-0 inset-x-0 px-4 pb-4 inset-0 flex items-center justify-center z-[50]"
-        ref={containerModal}
-        style={{ display: "none" }}
-      >
+      {isOpen && (
         <div
-          className="fixed inset-0 transition-opacity opacity-0  duration-200"
-          ref={visbibleElement}
-          onClick={VisbOpacity}
-          aria-hidden="true"
+          className="font-sans fixed bottom-0 top-0 inset-x-0 px-4 pb-4 inset-0 flex items-center justify-center z-[50]"
+          ref={containerModal}
+          style={{ display: "none" }}
         >
-          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+          <div
+            className="fixed inset-0 transition-opacity opacity-0  duration-200"
+            ref={visbibleElement}
+            onClick={VisbOpacity}
+            aria-hidden="true"
+          >
+            <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+          </div>
+          <div
+            className={`bg-white rounded-lg overflow-hidden shadow-xl relative z-10 sm:max-w-lg sm:w-full transition-transform ${classAnimateOut} duration-300 ${classModalWidth}`}
+            ref={mainModal}
+          >
+            {children}
+          </div>
         </div>
-        <div
-          className={`bg-white rounded-lg overflow-hidden shadow-xl relative z-10 sm:max-w-lg sm:w-full transition-transform ${classAnimateOut} duration-300 ${classModalWidth}`}
-          ref={mainModal}
-        >
-          {children}
-        </div>
-      </div>
+      )}
     </Portal>
   )
 }

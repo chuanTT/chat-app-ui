@@ -46,3 +46,16 @@ export const isObject = (obj: any) => {
 export const dateCheck = (date?: string) => {
   return moment(date).fromNow(true)
 }
+
+export const getCamera = (callBack: (steam: MediaStream) => void) => {
+  navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then((stream) => {
+    callBack(stream)
+  })
+}
+
+export const playVideo = (stream: MediaStream, elmentVideo?: HTMLVideoElement | null) => {
+  if (elmentVideo) {
+    elmentVideo.srcObject = stream
+    elmentVideo.play()
+  }
+}

@@ -168,6 +168,8 @@ const ModalUpdateUser: FC<ModalUpdateUserProps> = ({ isOpen, setIsOpen }) => {
                 placeholder="Chọn ngày sinh"
                 title="Ngày sinh"
                 setValue={setValue}
+                classContainerDate="[&>*]:w-full"
+                classDate="[&>*]:w-full"
               />
               <ReactSelectCus
                 options={options}

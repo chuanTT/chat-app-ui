@@ -57,7 +57,7 @@ const ListFriendsLeft: FC<ListRoomLeftProps> = ({ setActiveFriend }) => {
         </div>
       )}
 
-      <ModalUnFriend isOpen={isOpen} setIsOpen={setIsOpen} activeUser={userActive} />
+      {isOpen && <ModalUnFriend isOpen={isOpen} setIsOpen={setIsOpen} activeUser={userActive} />}
     </div>
   )
 }

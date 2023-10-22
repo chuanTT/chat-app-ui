@@ -12,11 +12,11 @@ import "./index.css"
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <ToastContainer />
-      <div id="react-date"></div>
-    </QueryClientProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <RouterProvider router={router} />
+    <ToastContainer />
+    <div id="react-date"></div>
+  </QueryClientProvider>
+  // </React.StrictMode>
 )

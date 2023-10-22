@@ -15,6 +15,14 @@ const checkRoom = (url: string) => {
   return HTTP.get(`${tableRoom}${url}`)
 }
 
+const callerRoom = (data: { room_id?: number; caller_id?: string }) => {
+  return HTTP.post(`${tableRoom}/caller`, data)
+}
+
+const rejectedCaller = (room_id?: number) => {
+  return HTTP.post(`${tableRoom}/rejected-caller`, { room_id })
+}
+
 const deleteRoom = (id: number) => {
   return HTTP.delete(`${tableRoom}`, {
     data: {
@@ -34,4 +42,15 @@ const chatRoom = (data: any) => {
   return HTTP.post(`${tableRoom}/chat`, data)
 }
 
-export { getRoom, tableRoom, getSettingsRoom, tableRoomSetting, chatRoom, checkRoom, deleteRoom, toggleBlockRoom }
+export {
+  getRoom,
+  tableRoom,
+  getSettingsRoom,
+  tableRoomSetting,
+  callerRoom,
+  chatRoom,
+  checkRoom,
+  deleteRoom,
+  toggleBlockRoom,
+  rejectedCaller
+}

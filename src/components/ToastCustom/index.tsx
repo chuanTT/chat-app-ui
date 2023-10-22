@@ -5,7 +5,7 @@ const ToastCustom: FC<ToastCustomProps> = ({ children, title, isOpenToast, type,
   useEffect(() => {
     const options: ToastOptions = {
       ...option,
-      position: "top-right",
+      position: "bottom-left",
       autoClose: timeEnd || 1000,
       hideProgressBar: false,
       closeOnClick: true,
