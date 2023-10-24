@@ -12,7 +12,6 @@ import ModalReceive from "@/partials/ModalReceive"
 import { useSocket } from "@/layout/SocketContextLayout"
 import { useProtectedLayout } from "@/layout/ProtectedLayout"
 import config from "@/config"
-import { callerRoom } from "@/api/roomsApi"
 
 interface BoxRoomHeaderProps {
   data?: userData
@@ -119,11 +118,6 @@ const BoxRoomHeader: FC<BoxRoomHeaderProps> = ({ data, isFetched }) => {
                   screen.width - 50,
                   screen.height - 50
                 )
-
-                await callerRoom({
-                  caller_id: "ssjsj",
-                  room_id: room?.room_id
-                })
               }}
             >
               <MdVideocam size={25} className="hover:text-primary" />

@@ -234,6 +234,8 @@ declare global {
     room_id?: number
     friend?: userData
   }
+
+  type sendDataCaller = { room_id?: number; caller_id?: string }
 }
 
 export {}

@@ -48,7 +48,7 @@ export const dateCheck = (date?: string) => {
 }
 
 export const getCamera = (callBack: (steam: MediaStream) => void) => {
-  navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then((stream) => {
+  navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then((stream) => {
     callBack(stream)
   })
 }

@@ -19,7 +19,7 @@ const checkRoom = (url: string) => {
   return HTTP.get(`${tableRoom}${url}`)
 }
 
-const callerRoom = (data: { room_id?: number; caller_id?: string }) => {
+const callerRoom = (data: sendDataCaller) => {
   return HTTP.post(`${tableRoom}/caller`, data)
 }
 
