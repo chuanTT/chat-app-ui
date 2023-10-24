@@ -10,7 +10,7 @@ import { rejectedCaller } from "@/api/roomsApi"
 interface ModalReceiveProps {
   isOpen: boolean
   setIsOpen: Dispatch<SetStateAction<boolean>>
-  setIsCaller: Dispatch<SetStateAction<boolean>>
+  setIsCaller?: Dispatch<SetStateAction<boolean>>
 }
 
 const ModalReceive: FC<ModalReceiveProps> = ({ isOpen, setIsOpen, setIsCaller }) => {

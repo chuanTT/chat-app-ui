@@ -2,16 +2,17 @@ import { FC, useEffect, useState } from "react"
 import { BsTelephoneFill, BsThreeDotsVertical } from "react-icons/bs"
 import { MdVideocam } from "react-icons/md"
 
-import { dateCheck } from "@/common/functions"
+import { createPopupWin, dateCheck } from "@/common/functions"
 import { useChatProvider } from "@/layout/LayoutChatProvider"
 import Images from "../Images"
 import Shimmer from "../Shimmer"
 import DropDown from "../DropDown"
 import ModalBlockRoom from "@/partials/ModalBlockRoom"
-import ModalCallerVideo from "@/partials/ModalCallerVideo"
 import ModalReceive from "@/partials/ModalReceive"
 import { useSocket } from "@/layout/SocketContextLayout"
 import { useProtectedLayout } from "@/layout/ProtectedLayout"
+import config from "@/config"
+import { callerRoom } from "@/api/roomsApi"
 
 interface BoxRoomHeaderProps {
   data?: userData
@@ -23,9 +24,7 @@ const BoxRoomHeader: FC<BoxRoomHeaderProps> = ({ data, isFetched }) => {
   const { room } = useChatProvider()
   const { user } = useProtectedLayout()
   const [isOpen, setIsOpen] = useState(false)
-  const [isModalModalReceive, setIsModalReceive] = useState(false)
   const [isReceive, setIsReceive] = useState(false)
-  const [dataCaller, setDataCaller] = useState<callerRoom>()
 
   useEffect(() => {
     if (socket) {
@@ -33,12 +32,10 @@ const BoxRoomHeader: FC<BoxRoomHeaderProps> = ({ data, isFetched }) => {
       socket.on("caller-pending", (data: callerRoom) => {
         if (user?.id === data?.receiver_id) {
           !isReceive && setIsReceive(true)
-          setDataCaller(data)
         }
       })
 
       socket.on("rejected-caller", () => {
-        setIsModalReceive(false)
         setIsReceive(false)
       })
 
@@ -116,7 +113,17 @@ const BoxRoomHeader: FC<BoxRoomHeaderProps> = ({ data, isFetched }) => {
             <button
               type="button"
               onClick={async () => {
-                setIsModalReceive(true)
+                createPopupWin(
+                  `${config.router.callVideo}?room_id=${room?.room_id}`,
+                  "Gọi video",
+                  screen.width - 50,
+                  screen.height - 50
+                )
+
+                await callerRoom({
+                  caller_id: "ssjsj",
+                  room_id: room?.room_id
+                })
               }}
             >
               <MdVideocam size={25} className="hover:text-primary" />
@@ -146,11 +153,7 @@ const BoxRoomHeader: FC<BoxRoomHeaderProps> = ({ data, isFetched }) => {
         <ModalBlockRoom isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
 
-      {isModalModalReceive && (
-        <ModalCallerVideo remoteId={dataCaller?.caller_id} isOpen={isModalModalReceive} setIsOpen={setIsModalReceive} />
-      )}
-
-      {isReceive && <ModalReceive setIsCaller={setIsModalReceive} isOpen={isReceive} setIsOpen={setIsReceive} />}
+      {isReceive && <ModalReceive isOpen={isReceive} setIsOpen={setIsReceive} />}
     </div>
   )
 }

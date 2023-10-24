@@ -7,6 +7,10 @@ const getRoom = (url: string) => {
   return HTTP.get(url)
 }
 
+const getRoomOrther = (url: string) => {
+  return HTTP.get(`${tableRoom}/${url}`)
+}
+
 const getSettingsRoom = (url: string) => {
   return HTTP.get(`${tableRoom}/${url}`)
 }
@@ -46,6 +50,7 @@ export {
   getRoom,
   tableRoom,
   getSettingsRoom,
+  getRoomOrther,
   tableRoomSetting,
   callerRoom,
   chatRoom,

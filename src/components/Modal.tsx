@@ -1,4 +1,4 @@
-import { Dispatch, FC, ReactNode, SetStateAction, useEffect, useRef, MouseEvent, useState } from "react"
+import { Dispatch, FC, ReactNode, SetStateAction, useEffect, useRef, MouseEvent } from "react"
 import Portal from "./Portal"
 
 interface ModalProps {

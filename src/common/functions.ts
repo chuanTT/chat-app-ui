@@ -59,3 +59,15 @@ export const playVideo = (stream: MediaStream, elmentVideo?: HTMLVideoElement | 
     elmentVideo.play()
   }
 }
+
+export const createPopupWin = (pageURL: string, pageTitle: string, popupWinWidth: number, popupWinHeight: number) => {
+  const left = (screen.width - popupWinWidth) / 2
+  const top = (screen.height - popupWinHeight) / 2
+  const myWindow = window.open(
+    pageURL,
+    pageTitle,
+    "resizable=yes, width=" + popupWinWidth + ", height=" + popupWinHeight + ", top=" + top + ", left=" + left
+  )
+  myWindow?.focus()
+  return myWindow
+}

@@ -8,6 +8,7 @@ import LoginCover from "@/pages/Authentication/LoginCover"
 import RegisterCover from "@/pages/Authentication/RegisterCover"
 import { verifyToken } from "@/api/authApi"
 import AuthLayout from "@/layout/LayoutProvider"
+import CallVideo from "@/pages/CallVideo"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const Loadable = (Comp: LazyExoticComponent<ComponentType<any>>) => () => {
@@ -58,6 +59,11 @@ export const router: CustomRouteConfig[] = [
           {
             index: true,
             element: <Home />
+          },
+
+          {
+            path: config.router.callVideo,
+            element: <CallVideo />
           }
         ]
       },

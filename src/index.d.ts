@@ -229,6 +229,11 @@ declare global {
   }
 
   type callerRoom = { caller_id?: string; receiver_id?: number; room_id?: number }
+  type searchParamsCallVideo = { friend_id?: number; room_id?: number }
+  type roomExist = {
+    room_id?: number
+    friend?: userData
+  }
 }
 
 export {}

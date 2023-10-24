@@ -16,7 +16,6 @@ interface ModalCallerVideoProps {
   remoteId?: string
 }
 const ModalCallerVideo: FC<ModalCallerVideoProps> = ({ isOpen, setIsOpen, remoteId }) => {
-  const [isShowVideo, setIsShowVideo] = useState(false)
   const localStream = useRef<HTMLVideoElement>(null)
   const remoteStreamUser = useRef<HTMLVideoElement>(null)
   const [peer, setPeer] = useState<Peer>()
@@ -36,12 +35,12 @@ const ModalCallerVideo: FC<ModalCallerVideoProps> = ({ isOpen, setIsOpen, remote
           }
         }
       })
+      console.log(peer)
       peer.on("call", (call) => {
-        getCamera((stream) => {
-          call.answer(stream)
-          playVideo(stream, localStream.current)
-          setIsShowVideo(true)
-          remoteStreamUser.current?.classList?.remove("hidden")
+        getCamera((streamNew) => {
+          call.answer(streamNew)
+          console.log("oke")
+          playVideo(streamNew, localStream.current)
           call.on("stream", (remoteStream) => {
             playVideo(remoteStream, remoteStreamUser.current)
           })
@@ -53,12 +52,9 @@ const ModalCallerVideo: FC<ModalCallerVideoProps> = ({ isOpen, setIsOpen, remote
   }, [])
 
   useEffect(() => {
-    if (remoteId && peer) {
-      console.log(remoteId)
+    if (remoteId && peer && localStream && remoteStreamUser) {
       getCamera((stream) => {
         playVideo(stream, localStream.current)
-        remoteStreamUser.current?.classList?.remove("hidden")
-        setIsShowVideo(true)
         const call = peer.call(remoteId, stream)
         call.on("stream", (remoteStream) => {
           playVideo(remoteStream, remoteStreamUser.current)
@@ -76,18 +72,14 @@ const ModalCallerVideo: FC<ModalCallerVideoProps> = ({ isOpen, setIsOpen, remote
     >
       <div className="bg-[#000000] w-full h-full relative select-none flex items-end justify-center pb-4">
         <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex items-center flex-col justify-between">
-          {/* {!isShowVideo && (
-            <>
-              <img
-                src={room?.friend?.avatar ?? ""}
-                alt="img"
-                className="w-[100px] h-[100px] rounded-full object-cover mx-auto"
-              />
+          {/* <img
+            src={room?.friend?.avatar ?? ""}
+            alt="img"
+            className="w-[100px] h-[100px] rounded-full object-cover mx-auto"
+          />
 
-              <span className="block mt-2 text-[#e4e6eb] font-bold text-2xl">{room?.friend?.full_name}</span>
-              <span className="text-[#e4e6eb] text-sm mt-1 block">Đang gọi...</span>
-            </>
-          )} */}
+          <span className="block mt-2 text-[#e4e6eb] font-bold text-2xl">{room?.friend?.full_name}</span>
+          <span className="text-[#e4e6eb] text-sm mt-1 block">Đang gọi...</span> */}
 
           <video className="w-screen h-screen" style={{ backgroundColor: "#333" }} ref={remoteStreamUser} />
         </div>
