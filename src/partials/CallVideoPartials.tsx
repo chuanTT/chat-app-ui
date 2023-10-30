@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import Peer from "peerjs"
 import { ImPhoneHangUp } from "react-icons/im"
-import { FaMicrophoneSlash, FaVideo, FaVideoSlash } from "react-icons/fa"
+import { FaMicrophoneSlash, FaVideoSlash } from "react-icons/fa"
 
 import { useCallVideoProvider } from "@/layout/LayoutCallVideoProvider"
 import { getCamera, playVideo } from "@/common/functions"
@@ -11,12 +11,19 @@ import { callerRoom, rejectedCaller } from "@/api/roomsApi"
 import callAudio from "@/assets/audio/call_audio.mp3"
 import { useMutation } from "@tanstack/react-query"
 import { IoMdClose } from "react-icons/io"
+import { useSocket } from "@/layout/SocketContextLayout"
+import { useSearchParams } from "react-router-dom"
 
 const CallVideoPartials = () => {
+  const { socket } = useSocket()
   const { result } = useCallVideoProvider()
+  const [searchParams] = useSearchParams()
   const localStream = useRef<HTMLVideoElement>(null)
+  const remoteStreamUser = useRef<HTMLVideoElement>(null)
   const audio = useMemo(() => new Audio(callAudio), [])
   const [isRejected, setIsRejected] = useState(false)
+  const [peer, setPeer] = useState<Peer>()
+  const caller_id = searchParams.get("caller_id")
 
   const handelRejectedCall = () => {
     if (result?.room_id) {
@@ -39,32 +46,63 @@ const CallVideoPartials = () => {
   })
 
   useEffect(() => {
+    if (audio) {
+      const loopAudio = () => {
+        audio.play()
+      }
+      audio.addEventListener("ended", loopAudio)
+
+      return () => audio.removeEventListener("ended", loopAudio)
+    }
+    return
+  }, [audio])
+
+  useEffect(() => {
+    if (socket) {
+      const rejectedCallerFuc = () => {
+        setIsRejected(true)
+        audio && audio.pause()
+      }
+
+      const callerAgreeFuc = (data: callerRoom) => {
+        console.log(data)
+      }
+
+      socket.on("caller-agree", callerAgreeFuc)
+      socket.on("rejected-caller", rejectedCallerFuc)
+      return () => {
+        socket.off("caller-agree", callerAgreeFuc)
+        socket.off("rejected-caller", rejectedCallerFuc)
+      }
+    }
+
+    return
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket, result, peer])
+
+  useEffect(() => {
     if (result?.room_id) {
       getCamera((stream) => {
         playVideo(stream, localStream.current)
         const peer = new Peer()
         peer.on("open", async (id) => {
-          mutate({
-            caller_id: id,
-            room_id: result?.room_id
+          if (!caller_id) {
+            mutate({
+              caller_id: id,
+              room_id: result?.room_id
+            })
+          }
+        })
+
+        peer.on("call", (call) => {
+          call.answer(stream)
+          call.on("stream", (remoteStream) => {
+            playVideo(remoteStream, remoteStreamUser.current)
           })
         })
+        setPeer(peer)
       })
     }
-
-    //   console.log(peer)
-    //   peer.on("call", (call) => {
-    //     getCamera((streamNew) => {
-    //       call.answer(streamNew)
-    //       console.log("oke")
-    //       playVideo(streamNew, localStream.current)
-    //       call.on("stream", (remoteStream) => {
-    //         playVideo(remoteStream, remoteStreamUser.current)
-    //       })
-    //     })
-    //   })
-    //   setPeer(peer)
-    // })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result?.room_id])
 
@@ -79,8 +117,7 @@ const CallVideoPartials = () => {
 
         <span className="block mt-2 text-[#e4e6eb] font-bold text-2xl">{result?.friend?.full_name}</span>
         <span className="text-[#e4e6eb] text-sm mt-1 block"> {isRejected ? "Không trả lời" : "Đang gọi..."}</span>
-
-        {/* <video className="w-screen h-screen" style={{ backgroundColor: "#333" }} ref={remoteStreamUser} /> */}
+        <video className="w-screen h-screen" style={{ backgroundColor: "#333" }} ref={remoteStreamUser} />
       </div>
 
       <div className="relative z-10">
@@ -115,12 +152,12 @@ const CallVideoPartials = () => {
 
           {isRejected && (
             <>
-              <div className="flex items-center flex-col">
+              {/* <div className="flex items-center flex-col">
                 <div className="w-[40px] h-[40px] cursor-pointer flex items-center justify-center text-[#e4e6eb] bg-[#31cc46] rounded-full">
                   <FaVideo size={22} />
                 </div>
                 <span className="block mt-1 text-[#e4e6eb]">Gọi lại</span>
-              </div>
+              </div> */}
 
               <div className="flex items-center flex-col">
                 <div

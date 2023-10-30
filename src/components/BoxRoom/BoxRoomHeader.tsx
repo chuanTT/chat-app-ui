@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useEffect, useMemo, useState } from "react"
 import { BsTelephoneFill, BsThreeDotsVertical } from "react-icons/bs"
 import { MdVideocam } from "react-icons/md"
 
@@ -12,7 +12,7 @@ import ModalReceive from "@/partials/ModalReceive"
 import { useSocket } from "@/layout/SocketContextLayout"
 import { useProtectedLayout } from "@/layout/ProtectedLayout"
 import config from "@/config"
-
+import receiveAudio from "@/assets/audio/receive_audio.mp3"
 interface BoxRoomHeaderProps {
   data?: userData
   isFetched?: boolean
@@ -24,18 +24,34 @@ const BoxRoomHeader: FC<BoxRoomHeaderProps> = ({ data, isFetched }) => {
   const { user } = useProtectedLayout()
   const [isOpen, setIsOpen] = useState(false)
   const [isReceive, setIsReceive] = useState(false)
+  const [dataCallerPending, setDataCallerPending] = useState<callerRoom>({})
+  const audioReceive = useMemo(() => new Audio(receiveAudio), [])
+
+  useEffect(() => {
+    if (audioReceive) {
+      const loopAudio = () => audioReceive && audioReceive.play()
+      audioReceive.addEventListener("ended", loopAudio)
+      return () => {
+        audioReceive.removeEventListener("ended", loopAudio)
+      }
+    }
+    return
+  }, [audioReceive])
 
   useEffect(() => {
     if (socket) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       socket.on("caller-pending", (data: callerRoom) => {
         if (user?.id === data?.receiver_id) {
+          audioReceive && audioReceive?.play()
           !isReceive && setIsReceive(true)
+          setDataCallerPending(data)
         }
       })
 
       socket.on("rejected-caller", () => {
         setIsReceive(false)
+        audioReceive && audioReceive.pause()
       })
 
       return () => {
@@ -46,7 +62,7 @@ const BoxRoomHeader: FC<BoxRoomHeaderProps> = ({ data, isFetched }) => {
 
     return
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [room, user])
+  }, [room, user, audioReceive])
 
   return (
     <div className="flex justify-between items-center p-2 pt-0">
@@ -147,7 +163,14 @@ const BoxRoomHeader: FC<BoxRoomHeaderProps> = ({ data, isFetched }) => {
         <ModalBlockRoom isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
 
-      {isReceive && <ModalReceive isOpen={isReceive} setIsOpen={setIsReceive} />}
+      {isReceive && (
+        <ModalReceive
+          audioReceive={audioReceive}
+          dataCallerPending={dataCallerPending}
+          isOpen={isReceive}
+          setIsOpen={setIsReceive}
+        />
+      )}
     </div>
   )
 }

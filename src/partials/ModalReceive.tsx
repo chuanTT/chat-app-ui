@@ -6,14 +6,20 @@ import Modal from "@/components/Modal"
 import ToastCustom from "@/components/ToastCustom"
 import { useChatProvider } from "@/layout/LayoutChatProvider"
 import { rejectedCaller } from "@/api/roomsApi"
+import { createPopupWin } from "@/common/functions"
+import config from "@/config"
+import { useSocket } from "@/layout/SocketContextLayout"
 
 interface ModalReceiveProps {
   isOpen: boolean
   setIsOpen: Dispatch<SetStateAction<boolean>>
   setIsCaller?: Dispatch<SetStateAction<boolean>>
+  dataCallerPending?: callerRoom
+  audioReceive?: HTMLAudioElement
 }
 
-const ModalReceive: FC<ModalReceiveProps> = ({ isOpen, setIsOpen, setIsCaller }) => {
+const ModalReceive: FC<ModalReceiveProps> = ({ isOpen, setIsOpen, dataCallerPending, audioReceive }) => {
+  const { socket } = useSocket()
   const [isOpenToast, setIsOpenToast] = useState(false)
   const { room } = useChatProvider()
   const toastMsg = useRef<ToastConfig>({ title: "", type: "warn" })
@@ -59,7 +65,17 @@ const ModalReceive: FC<ModalReceiveProps> = ({ isOpen, setIsOpen, setIsCaller })
               <div
                 aria-hidden="true"
                 onClick={() => {
-                  setIsCaller && setIsCaller(true)
+                  setIsOpen(false)
+                  audioReceive && audioReceive.pause()
+                  if (socket) {
+                    socket.emit("caller-must", dataCallerPending)
+                  }
+                  createPopupWin(
+                    `${config.router.callVideo}?room_id=${room?.room_id}&caller_id=${dataCallerPending?.caller_id}`,
+                    "Gọi video",
+                    screen.width - 50,
+                    screen.height - 50
+                  )
                 }}
                 className="w-[40px] h-[40px] cursor-pointer flex items-center justify-center text-white bg-[#31cc46] rounded-full"
               >

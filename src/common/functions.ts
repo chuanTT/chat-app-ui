@@ -56,7 +56,10 @@ export const getCamera = (callBack: (steam: MediaStream) => void) => {
 export const playVideo = (stream: MediaStream, elmentVideo?: HTMLVideoElement | null) => {
   if (elmentVideo) {
     elmentVideo.srcObject = stream
-    elmentVideo.play()
+    elmentVideo.addEventListener("loadedmetadata", () => {
+      // Play the video as it loads
+      elmentVideo.play()
+    })
   }
 }
 
